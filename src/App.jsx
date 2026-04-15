@@ -1,11 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
 import Hero from './components/Hero.jsx'
-import Video from './components/Video.jsx'
 import Bio from './components/Bio.jsx'
-import PledgeWall from './components/PledgeWall.jsx'
-import ShoutoutBoard from './components/ShoutoutBoard.jsx'
-import PhotoWall from './components/PhotoWall.jsx'
-import AskCaleigh from './components/AskCaleigh.jsx'
+import ActionHub from './components/ActionHub.jsx'
+import CommunityFeed from './components/CommunityFeed.jsx'
 import Footer from './components/Footer.jsx'
 import FloatingShare from './components/FloatingShare.jsx'
 import AdminPanel from './components/AdminPanel.jsx'
@@ -14,12 +11,9 @@ function HomePage() {
   return (
     <>
       <Hero />
-      <Video />
       <Bio />
-      <PledgeWall />
-      <ShoutoutBoard />
-      <PhotoWall />
-      <AskCaleigh />
+      <ActionHub />
+      <CommunityFeed />
       <Footer />
       <FloatingShare />
     </>
