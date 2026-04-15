@@ -61,8 +61,11 @@ export default function ShoutoutBoard() {
   }, [])
 
   return (
-    <section className="bg-red-brand px-6 py-20">
-      <h2 className="text-white font-heading text-3xl md:text-4xl font-bold text-center">
+    <section className="px-8 py-24" style={{ backgroundColor: '#CC0000' }}>
+      <h2
+        className="text-4xl md:text-5xl font-bold text-center"
+        style={{ color: '#fff', fontFamily: "'Montserrat', sans-serif" }}
+      >
         Show Love
       </h2>
 
@@ -73,7 +76,17 @@ export default function ShoutoutBoard() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name"
-          className="bg-white/10 border-2 border-white/30 text-white placeholder-white/50 rounded-xl px-4 py-3 w-full focus:outline-none focus:border-white/60"
+          style={{
+            backgroundColor: 'rgba(255,255,255,0.15)',
+            border: '2px solid rgba(255,255,255,0.3)',
+            color: '#fff',
+            borderRadius: '12px',
+            padding: '14px 18px',
+            width: '100%',
+            fontSize: '16px',
+            outline: 'none',
+            fontFamily: "'Inter', sans-serif",
+          }}
         />
         <div>
           <textarea
@@ -83,16 +96,38 @@ export default function ShoutoutBoard() {
             }}
             placeholder="Show some love (140 chars max)"
             rows={3}
-            className="bg-white/10 border-2 border-white/30 text-white placeholder-white/50 rounded-xl px-4 py-3 w-full resize-none focus:outline-none focus:border-white/60"
+            style={{
+              backgroundColor: 'rgba(255,255,255,0.15)',
+              border: '2px solid rgba(255,255,255,0.3)',
+              color: '#fff',
+              borderRadius: '12px',
+              padding: '14px 18px',
+              width: '100%',
+              fontSize: '16px',
+              outline: 'none',
+              fontFamily: "'Inter', sans-serif",
+              resize: 'none',
+            }}
           />
-          <p className="text-white/50 text-sm text-right mt-1">
+          <p className="text-sm text-right mt-1" style={{ color: 'rgba(255,255,255,0.5)' }}>
             {message.length}/140
           </p>
         </div>
         <button
           type="submit"
           disabled={submitting || !name.trim() || !message.trim()}
-          className="bg-white text-red-brand px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100 w-full"
+          className="hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+          style={{
+            backgroundColor: '#fff',
+            color: '#CC0000',
+            padding: '14px 28px',
+            borderRadius: '9999px',
+            fontWeight: 700,
+            fontSize: '16px',
+            border: 'none',
+            cursor: 'pointer',
+            width: '100%',
+          }}
         >
           {submitting ? 'Posting...' : 'Post Your Shoutout'}
         </button>
@@ -105,11 +140,12 @@ export default function ShoutoutBoard() {
             <div key={shoutout.id}>
               {/* Visible card */}
               <div className="bg-white rounded-2xl p-6 text-left shadow-lg">
-                <p className="text-red-brand font-bold text-lg">{shoutout.name}</p>
+                <p className="font-bold text-lg" style={{ color: '#CC0000' }}>{shoutout.name}</p>
                 <p className="text-gray-700 mt-2">{shoutout.message}</p>
                 <button
                   onClick={() => handleShare(shoutout.id)}
-                  className="text-sm text-red-brand font-bold hover:underline mt-4 inline-block"
+                  className="text-sm font-bold hover:underline mt-4 inline-block"
+                  style={{ color: '#CC0000' }}
                 >
                   Share this
                 </button>

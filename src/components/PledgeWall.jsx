@@ -38,6 +38,7 @@ export default function PledgeWall() {
   )
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [inputFocused, setInputFocused] = useState(false)
   const previousCount = useRef(0)
 
   // Real-time listener for pledge count
@@ -120,21 +121,69 @@ export default function PledgeWall() {
         : ' stand with Caleigh')
   }
 
+  // Shared inline style objects
+  const primaryButtonStyle = {
+    backgroundColor: '#CC0000',
+    color: '#fff',
+    padding: '16px 32px',
+    borderRadius: '9999px',
+    fontWeight: 700,
+    fontSize: '18px',
+    border: 'none',
+    cursor: 'pointer',
+    fontFamily: "'Inter', sans-serif",
+  }
+
+  const inputStyle = {
+    border: inputFocused ? '2px solid #CC0000' : '2px solid #e5e7eb',
+    borderRadius: '12px',
+    padding: '14px 18px',
+    width: '100%',
+    fontSize: '18px',
+    outline: 'none',
+    fontFamily: "'Inter', sans-serif",
+    boxSizing: 'border-box',
+  }
+
   return (
-    <section className="bg-white px-6 py-20">
+    <section
+      className="px-8 py-24"
+      style={{ backgroundColor: '#FFFFFF' }}
+    >
       {/* Section Header */}
-      <h2 className="text-red-brand font-heading text-3xl md:text-4xl font-bold text-center mb-8">
+      <h2
+        className="text-4xl md:text-5xl font-bold text-center mb-8"
+        style={{ color: '#CC0000', fontFamily: "'Montserrat', sans-serif" }}
+      >
         Stand With Caleigh
       </h2>
 
       {/* Animated Counter */}
       <div className="flex justify-center mb-10">
         <div className="animate-pulse-glow rounded-2xl px-10 py-6 inline-block">
-          <p className="text-6xl md:text-8xl font-heading font-black text-red-brand text-center tabular-nums">
+          <p
+            className="text-center tabular-nums"
+            style={{
+              color: '#CC0000',
+              fontFamily: "'Montserrat', sans-serif",
+              fontWeight: 900,
+              fontSize: 'clamp(4rem, 10vw, 8rem)',
+              lineHeight: 1,
+            }}
+          >
             {pledgeCount}
           </p>
-          <p className="text-center text-gray-500 font-body text-sm mt-2 uppercase tracking-widest">
-            Pledges
+          <p
+            className="text-center mt-2"
+            style={{
+              color: '#9ca3af',
+              fontFamily: "'Inter', sans-serif",
+              fontSize: '0.875rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.3em',
+            }}
+          >
+            PLEDGES
           </p>
         </div>
       </div>
@@ -144,14 +193,16 @@ export default function PledgeWall() {
         {hasVoted ? (
           <button
             onClick={handleShare}
-            className="bg-red-brand text-white px-8 py-4 rounded-full text-xl font-bold hover:scale-105 transition-transform cursor-pointer"
+            className="hover:scale-105 transition-transform"
+            style={primaryButtonStyle}
           >
             Share the Movement 🔴
           </button>
         ) : (
           <button
             onClick={() => setShowModal(true)}
-            className="bg-red-brand text-white px-8 py-4 rounded-full text-xl font-bold hover:scale-105 transition-transform cursor-pointer"
+            className="hover:scale-105 transition-transform"
+            style={primaryButtonStyle}
           >
             I Stand With Caleigh 🔴
           </button>
@@ -161,7 +212,15 @@ export default function PledgeWall() {
       {/* Milestone Banners */}
       {pledgeCount >= 10 && (
         <div className="max-w-xl mx-auto mb-6 animate-fade-in-up">
-          <div className="bg-gold-accent/20 text-gold-accent p-4 rounded-xl text-xl font-bold text-center">
+          <div
+            className="text-xl font-bold text-center"
+            style={{
+              backgroundColor: 'rgba(255, 215, 0, 0.15)',
+              color: '#FFD700',
+              padding: '16px',
+              borderRadius: '12px',
+            }}
+          >
             The house is waking up.
           </div>
         </div>
@@ -169,7 +228,10 @@ export default function PledgeWall() {
 
       {pledgeCount >= 25 && (
         <div className="max-w-xl mx-auto mb-6 animate-fade-in-up">
-          <p className="italic text-red-brand text-center text-lg px-4">
+          <p
+            className="text-center text-lg px-4"
+            style={{ color: '#CC0000', fontStyle: 'italic', fontFamily: "'Inter', sans-serif" }}
+          >
             &ldquo;Y&rsquo;all are showing out. This is exactly why I&rsquo;m
             fighting for this. Thank you.&rdquo; &mdash; Caleigh
           </p>
@@ -178,7 +240,15 @@ export default function PledgeWall() {
 
       {pledgeCount >= 50 && (
         <div className="w-full mb-8 animate-fade-in-up">
-          <div className="bg-gold-accent text-red-brand p-6 text-3xl font-black text-center rounded-xl">
+          <div
+            className="text-3xl font-black text-center"
+            style={{
+              backgroundColor: '#FFD700',
+              color: '#CC0000',
+              padding: '24px',
+              borderRadius: '12px',
+            }}
+          >
             THE HOUSE IS UNITED.
           </div>
         </div>
@@ -188,11 +258,17 @@ export default function PledgeWall() {
       {pledges.length > 0 && (
         <div className="overflow-hidden max-w-3xl mx-auto mt-8">
           <div className="whitespace-nowrap animate-ticker">
-            <span className="inline-block text-gray-600 font-body text-lg px-4">
+            <span
+              className="inline-block text-lg px-4"
+              style={{ color: '#6b7280', fontFamily: "'Inter', sans-serif" }}
+            >
               {tickerText}
             </span>
             {/* Duplicate for seamless loop */}
-            <span className="inline-block text-gray-600 font-body text-lg px-4">
+            <span
+              className="inline-block text-lg px-4"
+              style={{ color: '#6b7280', fontFamily: "'Inter', sans-serif" }}
+            >
               {tickerText}
             </span>
           </div>
@@ -202,7 +278,8 @@ export default function PledgeWall() {
       {/* Modal */}
       {showModal && (
         <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center z-50"
+          className="fixed inset-0 flex items-center justify-center z-50"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
           onClick={(e) => {
             if (e.target === e.currentTarget) {
               setShowModal(false)
@@ -210,14 +287,23 @@ export default function PledgeWall() {
             }
           }}
         >
-          <div className="bg-white rounded-2xl p-8 max-w-sm mx-4 animate-fade-in-up">
+          <div
+            className="rounded-2xl p-8 max-w-sm mx-4 animate-fade-in-up"
+            style={{ backgroundColor: '#FFFFFF' }}
+          >
             {showConfirmation ? (
               <div className="text-center">
                 <p className="text-4xl mb-4">🔴</p>
-                <h3 className="font-heading text-2xl font-bold text-red-brand mb-2">
+                <h3
+                  className="text-2xl font-bold mb-2"
+                  style={{ color: '#CC0000', fontFamily: "'Montserrat', sans-serif" }}
+                >
                   You&rsquo;re on the wall.
                 </h3>
-                <p className="text-gray-600 font-body mb-6">
+                <p
+                  className="mb-6"
+                  style={{ color: '#6b7280', fontFamily: "'Inter', sans-serif" }}
+                >
                   Now bring someone else.
                 </p>
                 <button
@@ -226,7 +312,11 @@ export default function PledgeWall() {
                     setShowModal(false)
                     setShowConfirmation(false)
                   }}
-                  className="bg-red-brand text-white px-8 py-4 rounded-full text-lg font-bold hover:scale-105 transition-transform w-full cursor-pointer"
+                  className="w-full hover:scale-105 transition-transform"
+                  style={{
+                    ...primaryButtonStyle,
+                    width: '100%',
+                  }}
                 >
                   Share With Your People
                 </button>
@@ -242,10 +332,16 @@ export default function PledgeWall() {
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <h3 className="font-heading text-2xl font-bold text-red-brand mb-2 text-center">
+                <h3
+                  className="text-2xl font-bold mb-2 text-center"
+                  style={{ color: '#CC0000', fontFamily: "'Montserrat', sans-serif" }}
+                >
                   Add Your Name
                 </h3>
-                <p className="text-gray-500 font-body text-center mb-6 text-sm">
+                <p
+                  className="text-center mb-6"
+                  style={{ color: '#9ca3af', fontFamily: "'Inter', sans-serif", fontSize: '0.875rem' }}
+                >
                   Let Caleigh know you&rsquo;ve got her back.
                 </p>
                 <input
@@ -253,14 +349,21 @@ export default function PledgeWall() {
                   placeholder="Your first name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="border-2 border-gray-200 focus:border-red-brand rounded-xl px-4 py-3 w-full text-lg outline-none transition-colors font-body"
+                  onFocus={() => setInputFocused(true)}
+                  onBlur={() => setInputFocused(false)}
+                  style={inputStyle}
                   autoFocus
                   maxLength={30}
                 />
                 <button
                   type="submit"
                   disabled={!name.trim() || submitting}
-                  className="mt-4 bg-red-brand text-white px-8 py-4 rounded-full text-lg font-bold hover:scale-105 transition-transform w-full disabled:opacity-50 disabled:hover:scale-100 cursor-pointer"
+                  className="mt-4 w-full hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+                  style={{
+                    ...primaryButtonStyle,
+                    width: '100%',
+                    opacity: (!name.trim() || submitting) ? 0.5 : 1,
+                  }}
                 >
                   {submitting ? 'Adding...' : 'I Stand With Caleigh 🔴'}
                 </button>

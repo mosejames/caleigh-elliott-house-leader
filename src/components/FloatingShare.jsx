@@ -4,7 +4,24 @@ export default function FloatingShare() {
   return (
     <button
       onClick={() => triggerShare()}
-      className="fixed bottom-6 right-6 z-50 bg-red-brand text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center animate-pulse-glow hover:scale-110 transition-transform md:hidden cursor-pointer"
+      style={{
+        position: 'fixed',
+        bottom: '24px',
+        right: '24px',
+        zIndex: 50,
+        backgroundColor: '#CC0000',
+        color: '#fff',
+        width: '56px',
+        height: '56px',
+        borderRadius: '9999px',
+        border: 'none',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: '0 4px 20px rgba(204, 0, 0, 0.5)',
+      }}
+      className="animate-pulse-glow hover:scale-110 transition-transform md:hidden"
       aria-label="Share this page"
     >
       <svg
@@ -12,10 +29,11 @@ export default function FloatingShare() {
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth={2}
+        strokeWidth={2.5}
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="w-6 h-6"
+        width="24"
+        height="24"
       >
         <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
         <polyline points="16 6 12 2 8 6" />

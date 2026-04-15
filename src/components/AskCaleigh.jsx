@@ -57,13 +57,31 @@ export default function AskCaleigh() {
     }
   }
 
+  const inputStyle = {
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    border: '2px solid rgba(255,255,255,0.3)',
+    color: '#fff',
+    borderRadius: '12px',
+    padding: '14px 18px',
+    width: '100%',
+    fontSize: '16px',
+    outline: 'none',
+    fontFamily: "'Inter', sans-serif",
+  }
+
   return (
-    <section className="bg-red-brand px-6 py-20">
+    <section className="px-8 py-24" style={{ backgroundColor: '#CC0000' }}>
       <div className="max-w-3xl mx-auto text-center">
-        <h2 className="text-white font-heading text-3xl md:text-4xl font-bold">
+        <h2
+          className="text-4xl md:text-5xl font-bold"
+          style={{ color: '#fff', fontFamily: "'Montserrat', sans-serif" }}
+        >
           Ask Caleigh Anything
         </h2>
-        <p className="text-white/70 text-lg mt-2">
+        <p
+          className="text-lg mt-3"
+          style={{ color: 'rgba(255,255,255,0.7)' }}
+        >
           She actually reads these. She actually answers.
         </p>
 
@@ -73,7 +91,8 @@ export default function AskCaleigh() {
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="bg-white/10 border-2 border-white/30 text-white placeholder-white/50 rounded-xl px-4 py-3 w-full outline-none focus:border-gold-accent transition-colors"
+            className="placeholder-white/50"
+            style={inputStyle}
             required
           />
           <textarea
@@ -81,37 +100,53 @@ export default function AskCaleigh() {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             rows={4}
-            className="bg-white/10 border-2 border-white/30 text-white placeholder-white/50 rounded-xl px-4 py-3 w-full outline-none focus:border-gold-accent transition-colors resize-none"
+            className="placeholder-white/50"
+            style={{ ...inputStyle, resize: 'none' }}
             required
           />
           <button
             type="submit"
             disabled={submitting}
-            className="bg-white text-red-brand px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100 cursor-pointer"
+            className="hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+            style={{
+              backgroundColor: '#fff',
+              color: '#CC0000',
+              padding: '14px 28px',
+              borderRadius: '9999px',
+              fontWeight: 700,
+              fontSize: '16px',
+              border: 'none',
+              cursor: 'pointer',
+            }}
           >
             {submitting ? 'Sending...' : 'Submit Question'}
           </button>
           {submitted && (
-            <p className="text-gold-accent font-bold mt-2">
+            <p className="font-bold mt-2" style={{ color: '#FFD700' }}>
               Question submitted! Stay tuned for Caleigh's answer.
             </p>
           )}
         </form>
 
         {answered.length > 0 && (
-          <div className="mt-12 space-y-6">
+          <div className="mt-16 space-y-6">
             {answered.map((item) => (
               <div
                 key={item.id}
-                className="bg-white/10 rounded-2xl p-6 backdrop-blur-sm text-left"
+                className="backdrop-blur-sm text-left"
+                style={{
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                }}
               >
-                <p className="text-white font-bold text-lg">
+                <p className="font-bold text-lg" style={{ color: '#fff' }}>
                   Q: {item.question}
                 </p>
-                <p className="text-gold-accent italic mt-2">
+                <p className="italic mt-3" style={{ color: '#FFD700' }}>
                   A: {item.answer}
                 </p>
-                <p className="text-white/50 text-sm mt-2">
+                <p className="text-sm mt-3" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   Asked by {item.name}
                 </p>
               </div>

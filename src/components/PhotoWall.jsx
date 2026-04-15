@@ -66,8 +66,11 @@ export default function PhotoWall() {
   }
 
   return (
-    <section className="bg-white px-6 py-20">
-      <h2 className="text-red-brand font-heading text-3xl md:text-4xl font-bold text-center">
+    <section className="bg-white px-8 py-24">
+      <h2
+        className="text-3xl md:text-5xl font-bold text-center"
+        style={{ color: '#CC0000', fontFamily: "'Montserrat', sans-serif" }}
+      >
         Put Yourself On The Wall
       </h2>
 
@@ -78,10 +81,28 @@ export default function PhotoWall() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name"
-          className="border-2 border-gray-200 focus:border-red-brand rounded-xl px-4 py-3 w-full text-lg outline-none transition-colors"
+          style={{
+            border: '2px solid #e5e7eb',
+            borderRadius: '12px',
+            padding: '14px 18px',
+            width: '100%',
+            fontSize: '18px',
+            outline: 'none',
+            fontFamily: "'Inter', sans-serif",
+          }}
         />
 
-        <label className="block bg-red-brand/10 border-2 border-dashed border-red-brand rounded-xl p-8 text-center cursor-pointer hover:bg-red-brand/20 transition-colors">
+        <label
+          style={{
+            backgroundColor: 'rgba(204, 0, 0, 0.08)',
+            border: '2px dashed #CC0000',
+            borderRadius: '12px',
+            padding: '32px',
+            textAlign: 'center',
+            cursor: 'pointer',
+            display: 'block',
+          }}
+        >
           <input
             type="file"
             accept="image/*"
@@ -89,16 +110,31 @@ export default function PhotoWall() {
             className="hidden"
           />
           {file ? (
-            <span className="text-red-brand font-medium">{file.name}</span>
+            <span className="font-medium" style={{ color: '#CC0000' }}>{file.name}</span>
           ) : (
-            <span className="text-red-brand text-lg">Tap to upload a photo 📸</span>
+            <span className="text-lg" style={{ color: '#CC0000' }}>Tap to upload a photo 📸</span>
           )}
         </label>
 
         <button
           type="submit"
           disabled={uploading || !file || !name.trim()}
-          className="bg-red-brand text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform w-full disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center gap-2"
+          className="hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
+          style={{
+            backgroundColor: '#CC0000',
+            color: '#fff',
+            padding: '14px 28px',
+            borderRadius: '9999px',
+            fontWeight: 700,
+            fontSize: '16px',
+            border: 'none',
+            cursor: 'pointer',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+          }}
         >
           {uploading ? (
             <>
@@ -119,7 +155,17 @@ export default function PhotoWall() {
           </p>
           <button
             onClick={handleSharePrompt}
-            className="bg-gold-accent text-red-brand px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform"
+            className="px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform"
+            style={{
+              backgroundColor: '#FFD700',
+              color: '#CC0000',
+              padding: '14px 28px',
+              borderRadius: '9999px',
+              fontWeight: 700,
+              fontSize: '16px',
+              border: 'none',
+              cursor: 'pointer',
+            }}
           >
             Share the Wall
           </button>
@@ -134,20 +180,28 @@ export default function PhotoWall() {
               <img
                 src={photo.storageUrl}
                 alt={photo.name}
-                className="w-full aspect-square object-cover rounded-xl border-4 border-red-brand"
+                className="w-full aspect-square object-cover rounded-xl"
+                style={{ border: '4px solid #CC0000' }}
               />
               {/* Name overlay */}
-              <div className="absolute bottom-0 left-0 right-0 bg-red-brand/90 text-white text-center py-2 font-bold rounded-b-xl">
+              <div
+                className="absolute bottom-0 left-0 right-0 text-center py-2 font-bold rounded-b-xl"
+                style={{ backgroundColor: 'rgba(204, 0, 0, 0.9)', color: '#fff' }}
+              >
                 {photo.name}
               </div>
               {/* House of Amistad stamp */}
-              <span className="absolute top-2 right-2 bg-gold-accent text-red-brand text-xs font-bold px-2 py-1 rounded-full">
+              <span
+                className="absolute top-2 right-2 text-xs font-bold px-2 py-1 rounded-full"
+                style={{ backgroundColor: '#FFD700', color: '#CC0000' }}
+              >
                 House of Amistad
               </span>
               {/* Share button - visible on hover (desktop) or always visible (mobile) */}
               <button
                 onClick={() => handleSharePhoto(photo)}
-                className="absolute top-2 left-2 bg-white/90 text-red-brand text-xs font-bold px-3 py-1 rounded-full opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
+                className="absolute top-2 left-2 bg-white/90 text-xs font-bold px-3 py-1 rounded-full opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{ color: '#CC0000' }}
               >
                 Share
               </button>

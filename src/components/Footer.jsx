@@ -2,16 +2,39 @@ import { triggerShare } from '../utils/share.js'
 
 export default function Footer() {
   return (
-    <section className="bg-red-brand px-6 py-20 text-center">
-      <h2 className="text-white font-heading text-4xl md:text-6xl font-black tracking-widest">
+    <section className="px-8 py-24 text-center" style={{ backgroundColor: '#CC0000' }}>
+      <div
+        className="text-3xl sm:text-4xl md:text-6xl whitespace-nowrap overflow-hidden"
+        style={{
+          color: '#fff',
+          fontFamily: "'Montserrat', sans-serif",
+          fontWeight: 900,
+          letterSpacing: '0.15em',
+          lineHeight: 1.2,
+          fontSize: 'clamp(1.5rem, 6vw, 3.5rem)',
+        }}
+      >
         A — M — I — S — T — A — D
-      </h2>
-      <p className="text-white/70 text-lg mt-4">
+      </div>
+      <p
+        className="text-lg mt-6"
+        style={{ color: 'rgba(255,255,255,0.7)' }}
+      >
         House of Amistad | Ron Clark Academy | 2026-2027
       </p>
       <button
         onClick={() => triggerShare()}
-        className="bg-white text-red-brand px-8 py-3 rounded-full font-bold mt-8 hover:scale-105 transition-transform cursor-pointer"
+        className="hover:scale-105 transition-transform mt-10 inline-block"
+        style={{
+          backgroundColor: '#fff',
+          color: '#CC0000',
+          padding: '16px 40px',
+          borderRadius: '9999px',
+          fontWeight: 700,
+          fontSize: '18px',
+          border: 'none',
+          cursor: 'pointer',
+        }}
       >
         Share This Page
       </button>
