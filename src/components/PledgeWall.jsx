@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react'
 import { db } from '../firebase.js'
 import {
   doc,
-  getDoc,
   setDoc,
   collection,
   addDoc,
@@ -21,11 +20,7 @@ function fireConfetti() {
 }
 
 function fireGoldConfetti() {
-  confetti({
-    particleCount: 200,
-    spread: 100,
-    colors: ['#FFD700', '#CC0000', '#FFFFFF'],
-  })
+  confetti({ particleCount: 200, spread: 100, colors: ['#FFD700', '#CC0000', '#FFFFFF'] })
 }
 
 export default function PledgeWall() {
@@ -33,37 +28,28 @@ export default function PledgeWall() {
   const [name, setName] = useState('')
   const [pledgeCount, setPledgeCount] = useState(0)
   const [pledges, setPledges] = useState([])
-  const [hasVoted, setHasVoted] = useState(
-    () => localStorage.getItem('caleigh-pledged') === 'true'
-  )
+  const [hasVoted, setHasVoted] = useState(() => localStorage.getItem('caleigh-pledged') === 'true')
   const [showConfirmation, setShowConfirmation] = useState(false)
   const [submitting, setSubmitting] = useState(false)
-  const [inputFocused, setInputFocused] = useState(false)
   const previousCount = useRef(0)
 
-  // Real-time listener for pledge count
   useEffect(() => {
     const counterRef = doc(db, 'pledges', 'counter')
     const unsubscribe = onSnapshot(counterRef, (snap) => {
       const data = snap.data()
       const newCount = data?.count || 0
-      // Fire gold confetti when crossing the 50 milestone
-      if (previousCount.current < 50 && newCount >= 50) {
-        fireGoldConfetti()
-      }
+      if (previousCount.current < 50 && newCount >= 50) fireGoldConfetti()
       previousCount.current = newCount
       setPledgeCount(newCount)
     })
     return () => unsubscribe()
   }, [])
 
-  // Real-time listener for pledge submissions
   useEffect(() => {
     const submissionsRef = collection(db, 'pledges', 'submissions', 'entries')
     const q = query(submissionsRef, orderBy('timestamp', 'desc'), limit(50))
     const unsubscribe = onSnapshot(q, (snap) => {
-      const names = snap.docs.map((d) => d.data().name).filter(Boolean)
-      setPledges(names)
+      setPledges(snap.docs.map((d) => d.data().name).filter(Boolean))
     })
     return () => unsubscribe()
   }, [])
@@ -72,28 +58,13 @@ export default function PledgeWall() {
     e.preventDefault()
     const trimmed = name.trim()
     if (!trimmed || submitting) return
-
     setSubmitting(true)
     try {
-      // Add the pledge entry
-      const submissionsRef = collection(db, 'pledges', 'submissions', 'entries')
-      await addDoc(submissionsRef, {
-        name: trimmed,
-        timestamp: serverTimestamp(),
-      })
-
-      // Increment the counter (creates doc if it doesn't exist)
-      const counterRef = doc(db, 'pledges', 'counter')
-      await setDoc(counterRef, { count: increment(1) }, { merge: true })
-
-      // Mark as voted
+      await addDoc(collection(db, 'pledges', 'submissions', 'entries'), { name: trimmed, timestamp: serverTimestamp() })
+      await setDoc(doc(db, 'pledges', 'counter'), { count: increment(1) }, { merge: true })
       localStorage.setItem('caleigh-pledged', 'true')
       setHasVoted(true)
-
-      // Fire confetti
       fireConfetti()
-
-      // Show confirmation
       setShowConfirmation(true)
       setName('')
     } catch (err) {
@@ -104,244 +75,118 @@ export default function PledgeWall() {
   }
 
   function handleShare() {
-    triggerShare(
-      `I just pledged my support for Caleigh Elliott as House Leader! Stand with her too. We are that house. 🔴⚪ ${window.location.origin}`
-    )
+    triggerShare(`I just pledged my support for Caleigh Elliott as House Leader! Stand with her too. We are that house. \u{1F534}\u{26AA} ${window.location.origin}`)
   }
 
-  // Build the ticker text
-  const displayedNames = pledges.slice(0, 3)
-  const othersCount = pledgeCount - displayedNames.length
-  let tickerText = ''
-  if (displayedNames.length > 0) {
-    tickerText =
-      displayedNames.join(', ') +
-      (othersCount > 0
-        ? `, and ${othersCount} others stand with Caleigh`
-        : ' stand with Caleigh')
-  }
-
-  // Shared inline style objects
-  const primaryButtonStyle = {
-    backgroundColor: '#CC0000',
-    color: '#fff',
-    padding: '16px 32px',
-    borderRadius: '9999px',
-    fontWeight: 700,
-    fontSize: '18px',
-    border: 'none',
-    cursor: 'pointer',
-    fontFamily: "'Inter', sans-serif",
-  }
-
-  const inputStyle = {
-    border: inputFocused ? '2px solid #CC0000' : '2px solid #e5e7eb',
-    borderRadius: '12px',
-    padding: '14px 18px',
-    width: '100%',
-    fontSize: '18px',
-    outline: 'none',
-    fontFamily: "'Inter', sans-serif",
-    boxSizing: 'border-box',
-  }
+  const displayed = pledges.slice(0, 3)
+  const others = pledgeCount - displayed.length
+  const tickerText = displayed.length > 0
+    ? displayed.join(', ') + (others > 0 ? `, and ${others} others stand with Caleigh` : ' stand with Caleigh')
+    : ''
 
   return (
-    <section
-      className="px-8 py-24"
-      style={{ backgroundColor: '#FFFFFF' }}
-    >
-      {/* Section Header */}
-      <h2
-        className="text-4xl md:text-5xl font-bold text-center mb-8"
-        style={{ color: '#CC0000', fontFamily: "'Montserrat', sans-serif" }}
-      >
-        Stand With Caleigh
-      </h2>
+    <section className="section section-white">
+      <div className="max-w-3xl mx-auto text-center">
+        <h2 className="heading-section" style={{ color: 'var(--red)' }}>
+          Stand With Caleigh
+        </h2>
 
-      {/* Animated Counter */}
-      <div className="flex justify-center mb-10">
-        <div className="animate-pulse-glow rounded-2xl px-10 py-6 inline-block">
-          <p
-            className="text-center tabular-nums"
-            style={{
-              color: '#CC0000',
-              fontFamily: "'Montserrat', sans-serif",
-              fontWeight: 900,
-              fontSize: 'clamp(4rem, 10vw, 8rem)',
-              lineHeight: 1,
-            }}
-          >
-            {pledgeCount}
-          </p>
-          <p
-            className="text-center mt-2"
-            style={{
-              color: '#9ca3af',
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '0.875rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.3em',
-            }}
-          >
-            PLEDGES
+        {/* Counter */}
+        <div className="mt-8 mb-6">
+          <div className="animate-pulse-glow inline-block rounded-2xl px-8 py-4">
+            <p
+              className="tabular-nums"
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontWeight: 900,
+                fontSize: 'clamp(5rem, 15vw, 10rem)',
+                lineHeight: 0.9,
+                color: 'var(--red)',
+              }}
+            >
+              {pledgeCount}
+            </p>
+          </div>
+          <p style={{ color: 'var(--gray-400)', letterSpacing: '0.3em', textTransform: 'uppercase', fontSize: '0.8rem', marginTop: '8px' }}>
+            Pledges
           </p>
         </div>
-      </div>
 
-      {/* CTA Button */}
-      <div className="flex justify-center mb-12">
-        {hasVoted ? (
-          <button
-            onClick={handleShare}
-            className="hover:scale-105 transition-transform"
-            style={primaryButtonStyle}
-          >
-            Share the Movement 🔴
-          </button>
-        ) : (
-          <button
-            onClick={() => setShowModal(true)}
-            className="hover:scale-105 transition-transform"
-            style={primaryButtonStyle}
-          >
-            I Stand With Caleigh 🔴
-          </button>
+        {/* CTA */}
+        <div className="mb-12">
+          {hasVoted ? (
+            <button onClick={handleShare} className="btn btn-primary">Share the Movement {'\u{1F534}'}</button>
+          ) : (
+            <button onClick={() => setShowModal(true)} className="btn btn-primary" style={{ fontSize: '1.25rem', padding: '20px 48px' }}>
+              I Stand With Caleigh {'\u{1F534}'}
+            </button>
+          )}
+        </div>
+
+        {/* Milestones */}
+        {pledgeCount >= 10 && (
+          <div className="card-glass max-w-md mx-auto mb-6" style={{ background: 'var(--gold-dim)', border: 'none' }}>
+            <p style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.25rem' }}>
+              The house is waking up.
+            </p>
+          </div>
+        )}
+        {pledgeCount >= 25 && (
+          <p className="max-w-md mx-auto mb-6" style={{ color: 'var(--red)', fontStyle: 'italic', fontSize: '1.125rem', lineHeight: 1.6 }}>
+            &ldquo;Y&rsquo;all are showing out. This is exactly why I&rsquo;m fighting for this. Thank you.&rdquo; &mdash; Caleigh
+          </p>
+        )}
+        {pledgeCount >= 50 && (
+          <div className="mb-8" style={{ background: 'var(--gold)', color: 'var(--red)', padding: '24px', borderRadius: '16px' }}>
+            <p style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: 'clamp(1.5rem, 5vw, 2.5rem)' }}>
+              THE HOUSE IS UNITED.
+            </p>
+          </div>
+        )}
+
+        {/* Ticker */}
+        {pledges.length > 0 && (
+          <div className="overflow-hidden max-w-2xl mx-auto mt-6">
+            <div className="whitespace-nowrap animate-ticker">
+              <span className="inline-block px-4" style={{ color: 'var(--gray-400)', fontSize: '0.95rem' }}>
+                {tickerText}
+              </span>
+              <span className="inline-block px-4" style={{ color: 'var(--gray-400)', fontSize: '0.95rem' }}>
+                {tickerText}
+              </span>
+            </div>
+          </div>
         )}
       </div>
-
-      {/* Milestone Banners */}
-      {pledgeCount >= 10 && (
-        <div className="max-w-xl mx-auto mb-6 animate-fade-in-up">
-          <div
-            className="text-xl font-bold text-center"
-            style={{
-              backgroundColor: 'rgba(255, 215, 0, 0.15)',
-              color: '#FFD700',
-              padding: '16px',
-              borderRadius: '12px',
-            }}
-          >
-            The house is waking up.
-          </div>
-        </div>
-      )}
-
-      {pledgeCount >= 25 && (
-        <div className="max-w-xl mx-auto mb-6 animate-fade-in-up">
-          <p
-            className="text-center text-lg px-4"
-            style={{ color: '#CC0000', fontStyle: 'italic', fontFamily: "'Inter', sans-serif" }}
-          >
-            &ldquo;Y&rsquo;all are showing out. This is exactly why I&rsquo;m
-            fighting for this. Thank you.&rdquo; &mdash; Caleigh
-          </p>
-        </div>
-      )}
-
-      {pledgeCount >= 50 && (
-        <div className="w-full mb-8 animate-fade-in-up">
-          <div
-            className="text-3xl font-black text-center"
-            style={{
-              backgroundColor: '#FFD700',
-              color: '#CC0000',
-              padding: '24px',
-              borderRadius: '12px',
-            }}
-          >
-            THE HOUSE IS UNITED.
-          </div>
-        </div>
-      )}
-
-      {/* Live Scrolling Ticker */}
-      {pledges.length > 0 && (
-        <div className="overflow-hidden max-w-3xl mx-auto mt-8">
-          <div className="whitespace-nowrap animate-ticker">
-            <span
-              className="inline-block text-lg px-4"
-              style={{ color: '#6b7280', fontFamily: "'Inter', sans-serif" }}
-            >
-              {tickerText}
-            </span>
-            {/* Duplicate for seamless loop */}
-            <span
-              className="inline-block text-lg px-4"
-              style={{ color: '#6b7280', fontFamily: "'Inter', sans-serif" }}
-            >
-              {tickerText}
-            </span>
-          </div>
-        </div>
-      )}
 
       {/* Modal */}
       {showModal && (
         <div
-          className="fixed inset-0 flex items-center justify-center z-50"
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              setShowModal(false)
-              setShowConfirmation(false)
-            }
-          }}
+          className="fixed inset-0 flex items-center justify-center z-50 px-4"
+          style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+          onClick={(e) => { if (e.target === e.currentTarget) { setShowModal(false); setShowConfirmation(false) } }}
         >
-          <div
-            className="rounded-2xl p-8 max-w-sm mx-4 animate-fade-in-up"
-            style={{ backgroundColor: '#FFFFFF' }}
-          >
+          <div className="card w-full max-w-sm animate-scale-in" style={{ padding: '32px' }}>
             {showConfirmation ? (
               <div className="text-center">
-                <p className="text-4xl mb-4">🔴</p>
-                <h3
-                  className="text-2xl font-bold mb-2"
-                  style={{ color: '#CC0000', fontFamily: "'Montserrat', sans-serif" }}
-                >
+                <p style={{ fontSize: '3rem', marginBottom: '12px' }}>{'\u{1F534}'}</p>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)' }}>
                   You&rsquo;re on the wall.
                 </h3>
-                <p
-                  className="mb-6"
-                  style={{ color: '#6b7280', fontFamily: "'Inter', sans-serif" }}
-                >
-                  Now bring someone else.
-                </p>
-                <button
-                  onClick={() => {
-                    handleShare()
-                    setShowModal(false)
-                    setShowConfirmation(false)
-                  }}
-                  className="w-full hover:scale-105 transition-transform"
-                  style={{
-                    ...primaryButtonStyle,
-                    width: '100%',
-                  }}
-                >
+                <p style={{ color: 'var(--gray-400)', marginTop: '8px', marginBottom: '24px' }}>Now bring someone else.</p>
+                <button onClick={() => { handleShare(); setShowModal(false); setShowConfirmation(false) }} className="btn btn-primary btn-full">
                   Share With Your People
                 </button>
-                <button
-                  onClick={() => {
-                    setShowModal(false)
-                    setShowConfirmation(false)
-                  }}
-                  className="mt-3 text-gray-400 text-sm cursor-pointer hover:text-gray-600 transition-colors"
-                >
+                <button onClick={() => { setShowModal(false); setShowConfirmation(false) }} className="block mx-auto mt-3 text-sm cursor-pointer" style={{ color: 'var(--gray-400)', background: 'none', border: 'none' }}>
                   Close
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <h3
-                  className="text-2xl font-bold mb-2 text-center"
-                  style={{ color: '#CC0000', fontFamily: "'Montserrat', sans-serif" }}
-                >
+                <h3 className="text-center" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)' }}>
                   Add Your Name
                 </h3>
-                <p
-                  className="text-center mb-6"
-                  style={{ color: '#9ca3af', fontFamily: "'Inter', sans-serif", fontSize: '0.875rem' }}
-                >
+                <p className="text-center" style={{ color: 'var(--gray-400)', fontSize: '0.875rem', marginTop: '4px', marginBottom: '20px' }}>
                   Let Caleigh know you&rsquo;ve got her back.
                 </p>
                 <input
@@ -349,29 +194,14 @@ export default function PledgeWall() {
                   placeholder="Your first name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  onFocus={() => setInputFocused(true)}
-                  onBlur={() => setInputFocused(false)}
-                  style={inputStyle}
+                  className="input-light"
                   autoFocus
                   maxLength={30}
                 />
-                <button
-                  type="submit"
-                  disabled={!name.trim() || submitting}
-                  className="mt-4 w-full hover:scale-105 transition-transform disabled:opacity-50 disabled:hover:scale-100"
-                  style={{
-                    ...primaryButtonStyle,
-                    width: '100%',
-                    opacity: (!name.trim() || submitting) ? 0.5 : 1,
-                  }}
-                >
-                  {submitting ? 'Adding...' : 'I Stand With Caleigh 🔴'}
+                <button type="submit" disabled={!name.trim() || submitting} className="btn btn-primary btn-full" style={{ marginTop: '16px' }}>
+                  {submitting ? 'Adding...' : 'I Stand With Caleigh \u{1F534}'}
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="mt-3 text-gray-400 text-sm cursor-pointer hover:text-gray-600 transition-colors w-full text-center"
-                >
+                <button type="button" onClick={() => setShowModal(false)} className="block mx-auto mt-3 text-sm cursor-pointer" style={{ color: 'var(--gray-400)', background: 'none', border: 'none' }}>
                   Cancel
                 </button>
               </form>

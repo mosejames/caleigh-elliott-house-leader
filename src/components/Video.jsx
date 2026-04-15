@@ -2,62 +2,49 @@ import { triggerShare } from '../utils/share.js'
 
 export default function Video() {
   return (
-    <section
-      className="px-8 py-24"
-      style={{ backgroundColor: '#FFFFFF' }}
-    >
-      <h2
-        className="text-3xl md:text-5xl font-bold text-center mb-12"
-        style={{
-          color: '#CC0000',
-          fontFamily: "'Montserrat', sans-serif",
-        }}
-      >
-        Hear From Caleigh
-      </h2>
+    <section className="section section-white">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="heading-section text-center" style={{ color: 'var(--red)' }}>
+          Hear From Caleigh
+        </h2>
 
-      <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl">
-        <div className="aspect-video">
-          <iframe
-            className="w-full h-full"
-            src="https://www.youtube.com/embed/ul_30sXiF5o"
-            title="Caleigh Elliott for House Leader"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+        <div
+          className="mt-10 rounded-2xl overflow-hidden"
+          style={{ boxShadow: '0 20px 60px rgba(0, 0, 0, 0.15)' }}
+        >
+          <div className="aspect-video">
+            <iframe
+              className="w-full h-full"
+              src="https://www.youtube.com/embed/ul_30sXiF5o"
+              title="Caleigh Elliott for House Leader"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ border: 'none' }}
+            />
+          </div>
         </div>
-      </div>
 
-      <p
-        className="text-xl md:text-2xl max-w-2xl mx-auto mt-10 text-center leading-relaxed"
-        style={{
-          color: '#CC0000',
-          fontStyle: 'italic',
-          fontFamily: "'Inter', sans-serif",
-        }}
-      >
-        &ldquo;We are the best of the best, and we will never settle for less.
-        We are that house.&rdquo;
-      </p>
-
-      <div className="text-center mt-10">
-        <button
-          onClick={() => triggerShare()}
-          className="hover:scale-105 transition-transform"
+        <blockquote
+          className="text-center text-balance"
           style={{
-            backgroundColor: '#CC0000',
-            color: '#FFFFFF',
-            padding: '16px 32px',
-            borderRadius: '9999px',
+            fontFamily: 'var(--font-display)',
             fontWeight: 700,
-            fontSize: '18px',
-            border: 'none',
-            cursor: 'pointer',
-            fontFamily: "'Montserrat', sans-serif",
+            fontStyle: 'italic',
+            fontSize: 'clamp(1.125rem, 3vw, 1.5rem)',
+            lineHeight: 1.4,
+            color: 'var(--red)',
+            maxWidth: '600px',
+            margin: '40px auto 0',
           }}
         >
-          Share This
-        </button>
+          &ldquo;We are the best of the best, and we will never settle for less. We are that house.&rdquo;
+        </blockquote>
+
+        <div className="text-center mt-10">
+          <button onClick={() => triggerShare()} className="btn btn-primary">
+            Share This
+          </button>
+        </div>
       </div>
     </section>
   )
