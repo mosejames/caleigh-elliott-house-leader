@@ -7,23 +7,22 @@ const funFacts = [
 
 export default function Bio() {
   return (
-    <section className="section section-red relative grain">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="heading-section text-center" style={{ color: 'var(--white)' }}>
+    <section className="section section-red grain" style={{ position: 'relative' }}>
+      <div className="contain center-text">
+        <h2 className="heading-section" style={{ color: 'var(--white)' }}>
           Who Is Caleigh?
         </h2>
 
         <div
-          className="mx-auto mt-10"
           style={{
             maxWidth: '280px',
             aspectRatio: '3/4',
-            borderRadius: '20px',
             border: '4px solid var(--gold)',
             background: 'var(--glass)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            margin: '40px auto 0',
           }}
         >
           <span style={{ color: 'var(--white-muted)', fontFamily: 'var(--font-display)', fontWeight: 600 }}>
@@ -32,7 +31,7 @@ export default function Bio() {
         </div>
 
         <p
-          className="text-balance text-center"
+          className="text-balance"
           style={{
             fontStyle: 'italic',
             fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
@@ -40,6 +39,7 @@ export default function Bio() {
             color: 'var(--white-soft)',
             maxWidth: '600px',
             margin: '40px auto 0',
+            textAlign: 'center',
           }}
         >
           I&apos;m a proud rising 8th grader and I&apos;ve been a leader my whole
@@ -49,7 +49,7 @@ export default function Bio() {
           Bear. I show up for my people. That&apos;s just who I am.
         </p>
 
-        <div className="flex flex-wrap justify-center gap-3 mt-10">
+        <div className="flex-wrap-center" style={{ marginTop: '40px' }}>
           {funFacts.map((fact) => (
             <span
               key={fact}
@@ -57,7 +57,6 @@ export default function Bio() {
                 background: 'var(--white)',
                 color: 'var(--red)',
                 padding: '10px 20px',
-                borderRadius: '9999px',
                 fontFamily: 'var(--font-display)',
                 fontWeight: 700,
                 fontSize: '0.875rem',
