@@ -45,14 +45,14 @@ export default function WhyCaleigh() {
           className="center-text text-balance"
           style={{
             color: 'var(--gray-600)',
-            fontSize: 'clamp(0.95rem, 2.5vw, 1.1rem)',
+            fontSize: 'clamp(1rem, 2.6vw, 1.2rem)',
             maxWidth: '640px',
             margin: '20px auto 0',
-            lineHeight: 1.65,
+            lineHeight: 1.6,
             fontStyle: 'italic',
           }}
         >
-          &ldquo;If I haven&rsquo;t had the pleasure of meeting you, my name is Caleigh Elliott, and I&rsquo;m a proud rising 8th grader running to be your next Amistad House Leader.&rdquo;
+          &ldquo;Leadership is about lifting others up and making everyone feel like they belong.&rdquo;
         </p>
 
         <div style={{ marginTop: '48px', display: 'grid', gap: '16px' }}>
