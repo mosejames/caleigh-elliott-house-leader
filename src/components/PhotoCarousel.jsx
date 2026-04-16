@@ -46,6 +46,8 @@ export default function PhotoCarousel() {
           gap: 0,
           width: 'max-content',
           animation: 'photo-carousel-scroll 60s linear infinite',
+          willChange: 'transform',
+          transform: 'translate3d(0, 0, 0)',
         }}
       >
         {doubled.map((src, i) => (
@@ -54,7 +56,7 @@ export default function PhotoCarousel() {
             src={src}
             alt=""
             aria-hidden="true"
-            loading={i < shuffled.length ? 'eager' : 'lazy'}
+            loading="eager"
             decoding="async"
             style={{
               height: 'clamp(150px, 26vh, 300px)',
