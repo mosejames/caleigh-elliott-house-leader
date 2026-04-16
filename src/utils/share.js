@@ -1,6 +1,6 @@
 const SITE_URL = window.location.origin
 
-const DEFAULT_SHARE_TEXT = `Caleigh Elliott is running for House Leader and she needs your support. Watch her video and show love. We are that house. \u{1F534}\u{26AA} ${SITE_URL}`
+const DEFAULT_SHARE_TEXT = `Show some love for Caleigh! House of Amistad is family. Drop a shoutout or share a pic. \u{1F534}\u{26AA} ${SITE_URL}`
 
 export async function triggerShare(customText) {
   const text = customText || DEFAULT_SHARE_TEXT

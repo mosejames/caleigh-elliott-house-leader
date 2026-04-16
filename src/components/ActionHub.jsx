@@ -6,10 +6,8 @@ import { triggerShare } from '../utils/share.js'
 import confetti from 'canvas-confetti'
 
 const ACTIONS = [
-  { id: 'pledge', icon: PledgeIcon, label: 'Pledge Your Vote', sub: 'Add your name' },
-  { id: 'shoutout', icon: ShoutoutIcon, label: 'Send a Shoutout', sub: 'Write her a message' },
   { id: 'photo', icon: PhotoIcon, label: 'Share a Photo', sub: 'Post a pic with Caleigh' },
-  { id: 'qa', icon: QAIcon, label: 'Ask a Question', sub: 'She actually answers' },
+  { id: 'shoutout', icon: ShoutoutIcon, label: 'Send a Shoutout', sub: 'Write her a message' },
 ]
 
 export default function ActionHub() {
@@ -18,7 +16,10 @@ export default function ActionHub() {
   return (
     <section className="section section-red grain" style={{ position: 'relative' }}>
       <div className="contain center-text">
-        <h2 className="heading-section" style={{ color: 'var(--white)' }}>Support Caleigh</h2>
+        <h2 className="heading-section" style={{ color: 'var(--white)' }}>Show The Love</h2>
+        <p style={{ color: 'var(--white-muted)', marginTop: '12px', fontSize: '1rem', maxWidth: '500px', margin: '12px auto 0' }}>
+          House of Amistad is family. Celebrate Caleigh.
+        </p>
 
         <div className="grid-2" style={{ marginTop: '32px', maxWidth: '480px', marginLeft: 'auto', marginRight: 'auto' }}>
           {ACTIONS.map((a) => (
@@ -206,7 +207,7 @@ function ShoutoutModal({ onClose }) {
   }
 
   if (done) {
-    return <SuccessScreen emoji={'\u{1F4AC}'} title="Love posted!" subtitle="Your shoutout is live on the wall." shareText="I showed love for Caleigh Elliott! \u{1F534}" onClose={onClose} />
+    return <SuccessScreen emoji={'\u{1F4AC}'} title="Love posted!" subtitle="Your shoutout is on the wall. House of Amistad is family." shareText="Showed some love for Caleigh! House of Amistad \u{1F534}\u{26AA}" onClose={onClose} />
   }
 
   return (
@@ -251,7 +252,7 @@ function PhotoModal({ onClose }) {
   }
 
   if (done) {
-    return <SuccessScreen emoji={'\u{1F4F8}'} title="Photo uploaded!" subtitle="You're on the wall. Send this to someone who should be up here too." shareText="I'm on the wall for Caleigh Elliott! Share a photo too \u{1F534}\u{26AA}" onClose={onClose} />
+    return <SuccessScreen emoji={'\u{1F4F8}'} title="You're on the wall!" subtitle="House of Amistad just got brighter. Tell your people to get on the wall too." shareText="Just got on the wall for Caleigh! Show the love too \u{1F534}\u{26AA}" onClose={onClose} />
   }
 
   return (
