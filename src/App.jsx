@@ -10,6 +10,7 @@ import Footer from './components/Footer.jsx'
 import FloatingShare from './components/FloatingShare.jsx'
 import MemoryPopup from './components/MemoryPopup.jsx'
 import AdminPanel from './components/AdminPanel.jsx'
+import WallPage from './components/WallPage.jsx'
 
 function HomePage() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/wall" element={<WallPage />} />
       <Route path="/admin" element={<AdminPanel />} />
     </Routes>
   )

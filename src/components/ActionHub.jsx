@@ -22,7 +22,7 @@ export default function ActionHub() {
   }, [])
 
   return (
-    <section className="section" style={{ background: 'var(--gray-100)' }}>
+    <section id="team-caleigh" className="section" style={{ background: 'var(--gray-100)' }}>
       <div className="contain center-text">
         <h2 className="heading-section" style={{ color: 'var(--red)' }}>Team Caleigh</h2>
         <p style={{ color: 'var(--gray-600)', marginTop: '12px', fontSize: '1rem', maxWidth: '540px', margin: '12px auto 0' }}>
