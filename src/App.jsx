@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Hero from './components/Hero.jsx'
+import Logo from './components/Logo.jsx'
 import Bio from './components/Bio.jsx'
 import ActionHub from './components/ActionHub.jsx'
 import CommunityFeed from './components/CommunityFeed.jsx'
@@ -11,6 +12,7 @@ function HomePage() {
   return (
     <>
       <Hero />
+      <Logo />
       <Bio />
       <ActionHub />
       <CommunityFeed />
