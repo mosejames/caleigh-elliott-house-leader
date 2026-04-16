@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Hero from './components/Hero.jsx'
 import Logo from './components/Logo.jsx'
 import ElectionBanner from './components/ElectionBanner.jsx'
+import PhotoCarousel from './components/PhotoCarousel.jsx'
 import WhyCaleigh from './components/WhyCaleigh.jsx'
 import ActionHub from './components/ActionHub.jsx'
 import CommunityFeed from './components/CommunityFeed.jsx'
@@ -15,6 +16,7 @@ function HomePage() {
       <Hero />
       <Logo />
       <ElectionBanner />
+      <PhotoCarousel />
       <WhyCaleigh />
       <ActionHub />
       <CommunityFeed />
