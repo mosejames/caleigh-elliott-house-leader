@@ -29,7 +29,7 @@ export default function Hero() {
         <div className="animate-fade-up delay-3" style={{ marginTop: '40px', overflow: 'hidden', boxShadow: '0 12px 40px rgba(0,0,0,0.3)' }}>
           <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
             <iframe
-              src="https://www.youtube.com/embed/ul_30sXiF5o"
+              src="https://www.youtube.com/embed/NtoHyxXwxrM"
               title="Caleigh Elliott for House Leader"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
