@@ -7,7 +7,6 @@ const PHOTOS = [
   '/photos/1747433886_1_244.jpg',
   '/photos/8AF15D8C-0833-4E3A-8074-55F52C08FC81.JPG',
   '/photos/B24CDBA4-6176-45BE-8529-81FE6AA25889.JPG',
-  '/photos/IMG_0898.png',
   '/photos/IMG_1850.jpeg',
   '/photos/IMG_6423.JPG',
   '/photos/amiamor00188.jpg',
