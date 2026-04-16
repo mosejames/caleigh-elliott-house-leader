@@ -4,9 +4,9 @@ export default function ElectionBanner() {
   const days = Math.max(0, Math.ceil((target.getTime() - now.getTime()) / 86400000))
 
   const countdown =
-    days === 0 ? 'Today is the day — vote Caleigh.' :
-    days === 1 ? '1 day left. Vote Caleigh tomorrow.' :
-                 `${days} days left. Vote Caleigh.`
+    days === 0 ? 'Today is the day \u{1F49B}' :
+    days === 1 ? 'Tomorrow is the day. Thanks for being in my corner. \u{1F49B}' :
+                 `${days} days to go. Thanks for being in my corner. \u{1F49B}`
 
   return (
     <section

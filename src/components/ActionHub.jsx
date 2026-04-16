@@ -6,9 +6,9 @@ import { triggerShare } from '../utils/share.js'
 import confetti from 'canvas-confetti'
 import Family from './Family.jsx'
 
-const SECONDARY = [
-  { id: 'photo', icon: PhotoIcon, label: 'Share a Photo', sub: 'Post a pic with Caleigh' },
-  { id: 'shoutout', icon: ShoutoutIcon, label: 'Send a Shoutout', sub: 'Write her a message' },
+const ACTIONS = [
+  { id: 'shoutout', icon: ShoutoutIcon, label: 'Send Me a Note', sub: 'Drop a kind word' },
+  { id: 'photo', icon: PhotoIcon, label: 'Post a Pic', sub: 'Share a pic with me' },
 ]
 
 export default function ActionHub() {
@@ -17,48 +17,14 @@ export default function ActionHub() {
   return (
     <section className="section section-red grain" style={{ position: 'relative' }}>
       <div className="contain center-text" style={{ position: 'relative' }}>
-        <h2 className="heading-section" style={{ color: 'var(--white)' }}>Support Caleigh</h2>
+        <h2 className="heading-section" style={{ color: 'var(--white)' }}>Help Me Out?</h2>
         <p style={{ color: 'var(--white-muted)', marginTop: '12px', fontSize: '1rem', maxWidth: '520px', margin: '12px auto 0' }}>
-          April 20 is almost here. Here&rsquo;s how you help.
+          A kind word or a pic would mean a lot. No pressure &#x1F49B;
         </p>
 
-        {/* Primary CTA — Pledge */}
-        <div style={{ marginTop: '32px', maxWidth: '520px', marginLeft: 'auto', marginRight: 'auto' }}>
-          <button
-            onClick={() => setActive('pledge')}
-            className="animate-pulse-glow"
-            style={{
-              width: '100%',
-              background: 'var(--gold)',
-              color: 'var(--red)',
-              border: 'none',
-              padding: '22px 24px',
-              cursor: 'pointer',
-              fontFamily: 'var(--font-display)',
-              fontWeight: 900,
-              fontSize: 'clamp(1.1rem, 3vw, 1.35rem)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.1em',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '12px',
-              transition: 'transform 0.2s ease',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)' }}
-            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
-          >
-            <PledgeIcon />
-            <span>Pledge Your Vote</span>
-          </button>
-          <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.8rem', color: 'var(--white-muted)', marginTop: '10px', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
-            Add your name &middot; 30 seconds
-          </p>
-        </div>
-
-        {/* Secondary — Photo + Shoutout */}
-        <div className="grid-2" style={{ marginTop: '32px', maxWidth: '520px', marginLeft: 'auto', marginRight: 'auto' }}>
-          {SECONDARY.map((a) => (
+        {/* Photo + Shoutout tiles */}
+        <div className="grid-2" style={{ marginTop: '36px', maxWidth: '520px', marginLeft: 'auto', marginRight: 'auto' }}>
+          {ACTIONS.map((a) => (
             <button
               key={a.id}
               onClick={() => setActive(a.id)}
@@ -256,21 +222,21 @@ function ShoutoutModal({ onClose }) {
   }
 
   if (done) {
-    return <SuccessScreen emoji={'\u{1F4AC}'} title="Love posted!" subtitle={<>Your shoutout is on the wall. House of Amistad is <Family />.</>} shareText="Showed some love for Caleigh! House of Amistad \u{1F534}\u{26AA}" onClose={onClose} />
+    return <SuccessScreen emoji={'\u{1F49B}'} title="Got it \u2014 thank you!" subtitle={<>Your note is on the wall. House of Amistad is <Family />.</>} shareText="Sent Caleigh some love for Amistad House Leader \u{1F534}\u{26AA}" onClose={onClose} />
   }
 
   return (
     <form onSubmit={submit}>
-      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '20px' }}>Send a Shoutout</p>
+      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '20px' }}>Send Me a Note</p>
       <div className="space-y">
         <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} className="input-light" />
         <div>
-          <textarea placeholder="Show some love (140 chars max)" value={message} onChange={(e) => { if (e.target.value.length <= 140) setMessage(e.target.value) }} rows={3} className="input-light" style={{ resize: 'none' }} />
+          <textarea placeholder="Drop a kind word (140 chars)" value={message} onChange={(e) => { if (e.target.value.length <= 140) setMessage(e.target.value) }} rows={3} className="input-light" style={{ resize: 'none' }} />
           <p style={{ color: 'var(--gray-400)', fontSize: '0.75rem', textAlign: 'right', marginTop: '4px' }}>{message.length}/140</p>
         </div>
         <ErrorBanner message={error} />
         <button type="submit" disabled={submitting || !name.trim() || !message.trim()} className="btn btn-primary btn-full">
-          {submitting ? 'Posting...' : 'Post Shoutout'}
+          {submitting ? 'Posting...' : 'Post It'}
         </button>
       </div>
     </form>
@@ -301,12 +267,13 @@ function PhotoModal({ onClose }) {
   }
 
   if (done) {
-    return <SuccessScreen emoji={'\u{1F4F8}'} title="You're on the wall!" subtitle="House of Amistad just got brighter. Tell your people to get on the wall too." shareText="Just got on the wall for Caleigh! Show the love too \u{1F534}\u{26AA}" onClose={onClose} />
+    return <SuccessScreen emoji={'\u{1F4F8}'} title="You\u2019re on the wall!" subtitle="Thanks for sharing. Tell a friend to post one too." shareText="On the wall for Caleigh \u{1F534}\u{26AA} Amistad House Leader" onClose={onClose} />
   }
 
   return (
     <form onSubmit={submit}>
-      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '20px' }}>Share a Photo</p>
+      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '6px' }}>Post a Pic</p>
+      <p className="center-text" style={{ color: 'var(--gray-400)', fontSize: '0.875rem', marginBottom: '20px' }}>Got a pic of us? Share it.</p>
       <div className="space-y">
         <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} className="input-light" />
         <label style={{ display: 'block', background: 'rgba(204,0,0,0.05)', border: '2px dashed var(--red)', padding: '28px 16px', textAlign: 'center', cursor: 'pointer' }}>

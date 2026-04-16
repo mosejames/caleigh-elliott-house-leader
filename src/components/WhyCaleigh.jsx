@@ -1,33 +1,35 @@
+import Family from './Family.jsx'
+
 const REASONS = [
   {
     emoji: '\u{1F3C0}',
     title: 'Point Guard Brain',
-    copy: '"Being a point guard taught me how to lead, communicate, and make sure everyone is involved — just like a great house leader should."',
+    copy: '"Being a point guard taught me how to lead, communicate, and make sure everyone is involved \u2014 just like a great house leader should."',
   },
   {
     emoji: '\u{1F43B}',
-    title: '"Mama Bear" Energy',
-    copy: 'She genuinely loves taking care of people. When it counts, she shows up.',
+    title: "I'm a Mama Bear",
+    copy: 'I genuinely love taking care of my people. When it counts, I show up.',
   },
   {
     emoji: '\u{1F91D}',
     title: 'Chair of the Mentorship Committee',
-    copy: 'Built the welcome plan for every incoming 4th grader with her co-chair — cards, activities, quarterly goals. Nobody feels lost on day one.',
+    copy: 'With my co-chair, we built the welcome plan for every incoming 4th grader \u2014 cards, activities, quarterly goals. Nobody should feel lost on day one.',
   },
   {
     emoji: '\u{1F451}',
-    title: "Dean of the Newbie Line — '25 & '26",
-    copy: 'Her Stomp Wars pep talk: "Do not fear the other teams. We only fear God."',
+    title: "Dean of the Newbie Line \u2014 '25 & '26",
+    copy: 'My Stomp Wars pep talk to the line: "Do not fear the other teams. We only fear God."',
   },
   {
     emoji: '\u{1F4DA}',
-    title: 'Lifts the Whole House Up',
-    copy: 'Runs study groups and tutors across the Class of 2027 so we all win together.',
+    title: 'I lift my whole house up',
+    copy: 'Study groups and tutoring across the Class of 2027 so we all win together.',
   },
   {
     emoji: '\u2728',
-    title: 'Integrity. Determination. Perseverance.',
-    copy: 'The values behind every accolade. The unconquered spirit of the peacock.',
+    title: 'How I try to show up',
+    copy: 'Integrity. Determination. Perseverance. Hard work. That\u2019s how I earn it every day.',
   },
 ]
 
@@ -36,7 +38,7 @@ export default function WhyCaleigh() {
     <section className="section section-white">
       <div className="contain">
         <h2 className="heading-section" style={{ color: 'var(--red)' }}>
-          Why Caleigh
+          A Note From Me
         </h2>
 
         <p
@@ -50,7 +52,7 @@ export default function WhyCaleigh() {
             fontStyle: 'italic',
           }}
         >
-          &ldquo;If I haven&rsquo;t had the pleasure of meeting you, my name is Caleigh Elliott, and I am a proud rising 8th grader running to be your next Amistad House Leader.&rdquo;
+          &ldquo;If I haven&rsquo;t had the pleasure of meeting you, my name is Caleigh Elliott, and I&rsquo;m a proud rising 8th grader running to be your next Amistad House Leader.&rdquo;
         </p>
 
         <div style={{ marginTop: '48px', display: 'grid', gap: '16px' }}>
@@ -105,7 +107,25 @@ export default function WhyCaleigh() {
           ))}
         </div>
 
-        {/* Amistad context */}
+        {/* Caleigh's promise */}
+        <p
+          className="text-balance"
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontWeight: 600,
+            fontStyle: 'italic',
+            fontSize: 'clamp(1.05rem, 2.6vw, 1.3rem)',
+            lineHeight: 1.55,
+            color: 'var(--gray-800)',
+            textAlign: 'center',
+            maxWidth: '620px',
+            margin: '48px auto 0',
+          }}
+        >
+          &ldquo;If I have the honor of being your House Leader, I promise to help us grow, support one another, and keep leading our school with pride.&rdquo;
+        </p>
+
+        {/* What Amistad means */}
         <div
           className="grain"
           style={{
@@ -130,7 +150,7 @@ export default function WhyCaleigh() {
                 marginBottom: '14px',
               }}
             >
-              What Amistad Means
+              My House
             </p>
             <p
               className="text-balance"
@@ -146,9 +166,9 @@ export default function WhyCaleigh() {
             >
               <span style={{ fontWeight: 800 }}>Amistad</span> is Spanish for{' '}
               <span style={{ color: 'var(--gold)', fontWeight: 700 }}>friendship</span>.
-              Our peacock never quits. Our knights protect the house. Our color is red — the{' '}
+              Our peacock never quits. Our knights protect the house. Our color is red &mdash; the{' '}
               <span style={{ color: 'var(--gold)', fontWeight: 700 }}>kindness of heart</span>.
-              Caleigh lives this every single day.
+              We&rsquo;re <Family />, and I show up for my <Family />.
             </p>
           </div>
         </div>
@@ -182,7 +202,7 @@ export default function WhyCaleigh() {
             marginTop: '14px',
           }}
         >
-          &mdash; Caleigh
+          &mdash; With love, Caleigh
         </p>
       </div>
     </section>

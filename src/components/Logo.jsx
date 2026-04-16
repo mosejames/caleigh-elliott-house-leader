@@ -1,5 +1,3 @@
-import Family from './Family.jsx'
-
 export default function Logo() {
   return (
     <section
@@ -35,21 +33,21 @@ export default function Logo() {
             margin: '36px auto 14px',
           }}
         >
-          House of Amistad is picking its next leader.
+          Hey &mdash; it&rsquo;s me, Caleigh <span style={{ color: 'var(--red)' }}>&#x1F49B;</span>
         </p>
 
         <p
           className="animate-fade-up delay-2 text-balance"
           style={{
             fontFamily: 'var(--font-body)',
-            fontSize: 'clamp(0.95rem, 2.2vw, 1.05rem)',
+            fontSize: 'clamp(0.95rem, 2.2vw, 1.1rem)',
             lineHeight: 1.65,
             color: 'var(--gray-600)',
-            maxWidth: '520px',
+            maxWidth: '540px',
             margin: '0 auto',
           }}
         >
-          On April 20, our <Family /> chooses who carries us into 2026&ndash;2027. Here&rsquo;s why we&rsquo;re standing with <strong style={{ color: 'var(--red)', fontWeight: 700 }}>Caleigh Elliott</strong>.
+          I&rsquo;m running to be your next Amistad House Leader for 2026&ndash;2027. Our election is <strong style={{ color: 'var(--red)', fontWeight: 700 }}>April 20</strong>. If you believe in me, a shout, a pic, or just a kind word would mean the world.
         </p>
       </div>
     </section>
