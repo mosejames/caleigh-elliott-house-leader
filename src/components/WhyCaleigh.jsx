@@ -121,19 +121,16 @@ export default function WhyCaleigh() {
           }}
         >
           <div style={{ position: 'relative' }}>
-            <p
+            <img
+              src="/amistad-name-white.png"
+              alt="Amistad"
               style={{
-                fontFamily: 'var(--font-display)',
-                fontWeight: 700,
-                fontSize: '0.72rem',
-                color: 'var(--gold)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.25em',
-                marginBottom: '14px',
+                display: 'block',
+                width: 'clamp(200px, 44vw, 320px)',
+                height: 'auto',
+                margin: '0 auto 18px',
               }}
-            >
-              My House
-            </p>
+            />
             <p
               className="text-balance"
               style={{
