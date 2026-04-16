@@ -1,3 +1,5 @@
+import Family from './Family.jsx'
+
 export default function Logo() {
   return (
     <section
@@ -47,7 +49,7 @@ export default function Logo() {
             margin: '0 auto',
           }}
         >
-          On April 20, our family chooses who carries us into 2026&ndash;2027. Here&rsquo;s why we&rsquo;re standing with <strong style={{ color: 'var(--red)', fontWeight: 700 }}>Caleigh Elliott</strong>.
+          On April 20, our <Family /> chooses who carries us into 2026&ndash;2027. Here&rsquo;s why we&rsquo;re standing with <strong style={{ color: 'var(--red)', fontWeight: 700 }}>Caleigh Elliott</strong>.
         </p>
       </div>
     </section>

@@ -4,6 +4,7 @@ import { doc, setDoc, collection, addDoc, onSnapshot, query, orderBy, where, inc
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { triggerShare } from '../utils/share.js'
 import confetti from 'canvas-confetti'
+import Family from './Family.jsx'
 
 const SECONDARY = [
   { id: 'photo', icon: PhotoIcon, label: 'Share a Photo', sub: 'Post a pic with Caleigh' },
@@ -255,7 +256,7 @@ function ShoutoutModal({ onClose }) {
   }
 
   if (done) {
-    return <SuccessScreen emoji={'\u{1F4AC}'} title="Love posted!" subtitle="Your shoutout is on the wall. House of Amistad is family." shareText="Showed some love for Caleigh! House of Amistad \u{1F534}\u{26AA}" onClose={onClose} />
+    return <SuccessScreen emoji={'\u{1F4AC}'} title="Love posted!" subtitle={<>Your shoutout is on the wall. House of Amistad is <Family />.</>} shareText="Showed some love for Caleigh! House of Amistad \u{1F534}\u{26AA}" onClose={onClose} />
   }
 
   return (
