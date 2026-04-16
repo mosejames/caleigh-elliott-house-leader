@@ -5,7 +5,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { triggerShare } from '../utils/share.js'
 import confetti from 'canvas-confetti'
 
-const ACTIONS = [
+const SECONDARY = [
   { id: 'photo', icon: PhotoIcon, label: 'Share a Photo', sub: 'Post a pic with Caleigh' },
   { id: 'shoutout', icon: ShoutoutIcon, label: 'Send a Shoutout', sub: 'Write her a message' },
 ]
@@ -15,36 +15,71 @@ export default function ActionHub() {
 
   return (
     <section className="section section-red grain" style={{ position: 'relative' }}>
-      <div className="contain center-text">
-        <h2 className="heading-section" style={{ color: 'var(--white)' }}>Show The Love</h2>
-        <p style={{ color: 'var(--white-muted)', marginTop: '12px', fontSize: '1rem', maxWidth: '500px', margin: '12px auto 0' }}>
-          House of Amistad is family. Celebrate Caleigh.
+      <div className="contain center-text" style={{ position: 'relative' }}>
+        <h2 className="heading-section" style={{ color: 'var(--white)' }}>Support Caleigh</h2>
+        <p style={{ color: 'var(--white-muted)', marginTop: '12px', fontSize: '1rem', maxWidth: '520px', margin: '12px auto 0' }}>
+          April 20 is almost here. Here&rsquo;s how you help.
         </p>
 
-        <div className="grid-2" style={{ marginTop: '32px', maxWidth: '480px', marginLeft: 'auto', marginRight: 'auto' }}>
-          {ACTIONS.map((a) => (
+        {/* Primary CTA — Pledge */}
+        <div style={{ marginTop: '32px', maxWidth: '520px', marginLeft: 'auto', marginRight: 'auto' }}>
+          <button
+            onClick={() => setActive('pledge')}
+            className="animate-pulse-glow"
+            style={{
+              width: '100%',
+              background: 'var(--gold)',
+              color: 'var(--red)',
+              border: 'none',
+              padding: '22px 24px',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-display)',
+              fontWeight: 900,
+              fontSize: 'clamp(1.1rem, 3vw, 1.35rem)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+              transition: 'transform 0.2s ease',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.02)' }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)' }}
+          >
+            <PledgeIcon />
+            <span>Pledge Your Vote</span>
+          </button>
+          <p style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.8rem', color: 'var(--white-muted)', marginTop: '10px', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+            Add your name &middot; 30 seconds
+          </p>
+        </div>
+
+        {/* Secondary — Photo + Shoutout */}
+        <div className="grid-2" style={{ marginTop: '32px', maxWidth: '520px', marginLeft: 'auto', marginRight: 'auto' }}>
+          {SECONDARY.map((a) => (
             <button
               key={a.id}
               onClick={() => setActive(a.id)}
               style={{
                 background: 'var(--white)',
                 border: 'none',
-                padding: '28px 16px',
+                padding: '24px 16px',
                 cursor: 'pointer',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '12px',
+                gap: '10px',
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
               }}
               onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.03)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.2)' }}
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none' }}
             >
               <a.icon />
-              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--red)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--red)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                 {a.label}
               </span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--gray-400)', marginTop: '-4px' }}>
+              <span style={{ fontSize: '0.72rem', color: 'var(--gray-400)', marginTop: '-4px' }}>
                 {a.sub}
               </span>
             </button>
@@ -65,10 +100,10 @@ export default function ActionHub() {
 }
 
 /* ── Icons ── */
-function PledgeIcon() {
+function PledgeIcon({ size = 28 }) {
   return (
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#CC0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0L12 5.36l-.77-.78a5.4 5.4 0 0 0-7.65 7.65l1.06 1.06L12 20.71l7.36-7.42 1.06-1.06a5.4 5.4 0 0 0 0-7.65z" />
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12" />
     </svg>
   )
 }

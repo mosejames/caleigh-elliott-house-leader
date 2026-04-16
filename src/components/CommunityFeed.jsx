@@ -15,8 +15,11 @@ export default function CommunityFeed() {
     return () => unsubs.forEach(u => u())
   }, [])
 
-  const hasContent = shoutouts.length > 0 || answered.length > 0 || photos.length > 0
-  if (!hasContent) return null
+  // Thresholds: avoid sparse sections that look like nobody showed up
+  const showPhotos = photos.length >= 3
+  const showShoutouts = shoutouts.length >= 2
+  const showAnswered = answered.length >= 1
+  if (!showPhotos && !showShoutouts && !showAnswered) return null
 
   return (
     <section className="section section-white">
@@ -27,7 +30,7 @@ export default function CommunityFeed() {
         </p>
 
         {/* Photos */}
-        {photos.length > 0 && (
+        {showPhotos && (
           <div style={{ marginTop: '40px' }}>
             <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gray-400)', marginBottom: '16px' }}>
               The House
@@ -46,7 +49,7 @@ export default function CommunityFeed() {
         )}
 
         {/* Shoutouts */}
-        {shoutouts.length > 0 && (
+        {showShoutouts && (
           <div style={{ marginTop: '40px' }}>
             <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gray-400)', marginBottom: '16px' }}>
               Shoutouts From The House
@@ -63,7 +66,7 @@ export default function CommunityFeed() {
         )}
 
         {/* Caleigh's own words */}
-        {answered.length > 0 && (
+        {showAnswered && (
           <div style={{ marginTop: '40px' }}>
             <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--gray-400)', marginBottom: '16px' }}>
               In Caleigh&rsquo;s Words

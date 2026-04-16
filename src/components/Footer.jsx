@@ -18,10 +18,23 @@ export default function Footer() {
 
       <div style={{ width: '80px', height: '4px', background: 'var(--gold)', margin: '24px auto 0' }} />
 
-      <p style={{ color: 'var(--white-muted)', fontSize: '1rem', marginTop: '20px', letterSpacing: '0.05em' }}>
+      <p
+        style={{
+          fontFamily: 'var(--font-display)',
+          fontWeight: 900,
+          fontSize: 'clamp(1rem, 2.8vw, 1.35rem)',
+          color: 'var(--gold)',
+          marginTop: '20px',
+          letterSpacing: '0.18em',
+          textTransform: 'uppercase',
+        }}
+      >
+        Vote Caleigh &middot; April 20
+      </p>
+      <p style={{ color: 'var(--white-muted)', fontSize: '0.95rem', marginTop: '12px', letterSpacing: '0.05em' }}>
         Ron Clark Academy &bull; 2026-2027
       </p>
-      <p style={{ color: 'var(--gold)', fontSize: '0.95rem', marginTop: '8px', fontStyle: 'italic', fontFamily: 'var(--font-display)', fontWeight: 600 }}>
+      <p style={{ color: 'var(--white-muted)', fontSize: '0.9rem', marginTop: '6px', fontStyle: 'italic', fontFamily: 'var(--font-display)', fontWeight: 500 }}>
         Everybody wins in Amistad.
       </p>
 
