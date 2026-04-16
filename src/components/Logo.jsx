@@ -8,7 +8,7 @@ export default function Logo() {
     >
       <div className="contain center-text">
         <img
-          src="/logo.png"
+          src="/ami4calieghlogo.png"
           alt="AMI for Caleigh"
           className="animate-fade-up"
           style={{
