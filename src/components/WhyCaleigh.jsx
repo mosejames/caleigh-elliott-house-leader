@@ -107,24 +107,6 @@ export default function WhyCaleigh() {
           ))}
         </div>
 
-        {/* Caleigh's promise */}
-        <p
-          className="text-balance"
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 600,
-            fontStyle: 'italic',
-            fontSize: 'clamp(1.05rem, 2.6vw, 1.3rem)',
-            lineHeight: 1.55,
-            color: 'var(--gray-800)',
-            textAlign: 'center',
-            maxWidth: '620px',
-            margin: '48px auto 0',
-          }}
-        >
-          &ldquo;If I have the honor of being your House Leader, I promise to help us grow, support one another, and keep leading our school with pride.&rdquo;
-        </p>
-
         {/* What Amistad means */}
         <div
           className="grain"
@@ -168,7 +150,7 @@ export default function WhyCaleigh() {
               <span style={{ color: 'var(--gold)', fontWeight: 700 }}>friendship</span>.
               Our peacock never quits. Our knights protect the house. Our color is red &mdash; the{' '}
               <span style={{ color: 'var(--gold)', fontWeight: 700 }}>kindness of heart</span>.
-              We&rsquo;re <Family />, and I show up for my <Family />.
+              We&rsquo;re <Family color="var(--gold)" />, and I show up for my <Family color="var(--gold)" />.
             </p>
           </div>
         </div>
