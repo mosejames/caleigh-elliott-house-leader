@@ -23,7 +23,7 @@ export default function ElectionBanner() {
             marginBottom: '22px',
           }}
         >
-          How I Show Up
+          Mr. Wynn Said
         </p>
 
         <p
@@ -39,9 +39,9 @@ export default function ElectionBanner() {
             margin: '0 auto',
           }}
         >
-          Servant leadership &mdash; not glitz or glam.
+          &ldquo;Servant leadership &mdash; not glitz or glam.
           <br />
-          Driven by purpose, not title.
+          Driven by purpose, not title.&rdquo;
         </p>
 
         <div
