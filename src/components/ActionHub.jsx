@@ -6,10 +6,10 @@ import { triggerShare } from '../utils/share.js'
 import confetti from 'canvas-confetti'
 
 const ACTIONS = [
-  { id: 'pledge', icon: PledgeIcon, label: 'Stand With Her', color: 'var(--red)' },
-  { id: 'shoutout', icon: ShoutoutIcon, label: 'Show Love', color: 'var(--red)' },
-  { id: 'photo', icon: PhotoIcon, label: 'Get On The Wall', color: 'var(--red)' },
-  { id: 'qa', icon: QAIcon, label: 'Ask Caleigh', color: 'var(--red)' },
+  { id: 'pledge', icon: PledgeIcon, label: 'Pledge Your Vote', sub: 'Add your name' },
+  { id: 'shoutout', icon: ShoutoutIcon, label: 'Send a Shoutout', sub: 'Write her a message' },
+  { id: 'photo', icon: PhotoIcon, label: 'Share a Photo', sub: 'Post a pic with Caleigh' },
+  { id: 'qa', icon: QAIcon, label: 'Ask a Question', sub: 'She actually answers' },
 ]
 
 export default function ActionHub() {
@@ -18,8 +18,7 @@ export default function ActionHub() {
   return (
     <section className="section section-red grain" style={{ position: 'relative' }}>
       <div className="contain center-text">
-        <h2 className="heading-section" style={{ color: 'var(--white)' }}>Get Involved</h2>
-        <p style={{ color: 'var(--white-muted)', marginTop: '8px', fontSize: '1rem' }}>Pick one. Do your part.</p>
+        <h2 className="heading-section" style={{ color: 'var(--white)' }}>Support Caleigh</h2>
 
         <div className="grid-2" style={{ marginTop: '32px', maxWidth: '480px', marginLeft: 'auto', marginRight: 'auto' }}>
           {ACTIONS.map((a) => (
@@ -41,8 +40,11 @@ export default function ActionHub() {
               onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none' }}
             >
               <a.icon />
-              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.95rem', color: 'var(--red)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--red)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
                 {a.label}
+              </span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--gray-400)', marginTop: '-4px' }}>
+                {a.sub}
               </span>
             </button>
           ))}
