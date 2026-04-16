@@ -112,11 +112,39 @@ function Modal({ children, onClose }) {
   )
 }
 
+/* ── Success Screen (shared) ── */
+function SuccessScreen({ emoji, title, subtitle, shareText, onClose }) {
+  return (
+    <div className="center-text">
+      <div style={{ fontSize: '4rem', lineHeight: 1 }}>{emoji}</div>
+      <p style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginTop: '12px' }}>{title}</p>
+      <p style={{ color: 'var(--gray-400)', marginTop: '8px', fontSize: '0.95rem' }}>{subtitle}</p>
+      <button onClick={() => { triggerShare(shareText + ' ' + window.location.origin); onClose() }} className="btn btn-primary btn-full" style={{ marginTop: '24px' }}>
+        Share It
+      </button>
+      <button onClick={onClose} style={{ display: 'block', margin: '12px auto 0', background: 'none', border: 'none', color: 'var(--gray-400)', fontSize: '0.875rem', cursor: 'pointer' }}>
+        Done
+      </button>
+    </div>
+  )
+}
+
+/* ── Error Banner ── */
+function ErrorBanner({ message }) {
+  if (!message) return null
+  return (
+    <p style={{ background: '#FEE2E2', color: '#991B1B', padding: '12px 16px', fontSize: '0.875rem', fontWeight: 600, marginTop: '12px' }}>
+      {message}
+    </p>
+  )
+}
+
 /* ── Pledge Modal ── */
 function PledgeModal({ onClose }) {
   const [name, setName] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(() => localStorage.getItem('caleigh-pledged') === 'true')
+  const [error, setError] = useState('')
   const [count, setCount] = useState(0)
 
   useEffect(() => {
@@ -128,37 +156,28 @@ function PledgeModal({ onClose }) {
     e.preventDefault()
     if (!name.trim() || submitting) return
     setSubmitting(true)
+    setError('')
     try {
       await addDoc(collection(db, 'pledges', 'submissions', 'entries'), { name: name.trim(), timestamp: serverTimestamp() })
       await setDoc(doc(db, 'pledges', 'counter'), { count: increment(1) }, { merge: true })
       localStorage.setItem('caleigh-pledged', 'true')
       setDone(true)
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } })
-    } catch (err) { console.error(err) }
+    } catch (err) { setError('Something went wrong. Try again.'); console.error(err) }
     finally { setSubmitting(false) }
   }
 
   if (done) {
-    return (
-      <div className="center-text">
-        <p style={{ fontSize: '3rem' }}>{'\u{1F534}'}</p>
-        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '2rem', color: 'var(--red)', marginTop: '8px' }}>{count}</p>
-        <p style={{ color: 'var(--gray-400)', fontSize: '0.8rem', letterSpacing: '0.2em', textTransform: 'uppercase' }}>Pledges</p>
-        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--red)', marginTop: '16px', fontSize: '1.1rem' }}>You&rsquo;re on the wall.</p>
-        <p style={{ color: 'var(--gray-400)', marginTop: '4px', fontSize: '0.9rem' }}>Now bring someone else.</p>
-        <button onClick={() => { triggerShare(`I pledged for Caleigh Elliott as House Leader! Stand with her too. \u{1F534}\u{26AA} ${window.location.origin}`); onClose() }} className="btn btn-primary btn-full" style={{ marginTop: '20px' }}>
-          Share With Your People
-        </button>
-      </div>
-    )
+    return <SuccessScreen emoji={'\u2705'} title="You're on the wall!" subtitle={`${count} people stand with Caleigh. Now bring someone else.`} shareText="I pledged for Caleigh Elliott as House Leader! Stand with her too. \u{1F534}\u{26AA}" onClose={onClose} />
   }
 
   return (
     <form onSubmit={submit} className="center-text">
-      <p style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)' }}>Stand With Caleigh</p>
+      <p style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)' }}>Pledge Your Vote</p>
       <p style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '3rem', color: 'var(--red)', marginTop: '8px' }}>{count}</p>
       <p style={{ color: 'var(--gray-400)', fontSize: '0.8rem', letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: '20px' }}>Pledges so far</p>
       <input type="text" placeholder="Your first name" value={name} onChange={(e) => setName(e.target.value)} className="input-light" autoFocus maxLength={30} />
+      <ErrorBanner message={error} />
       <button type="submit" disabled={!name.trim() || submitting} className="btn btn-primary btn-full" style={{ marginTop: '16px' }}>
         {submitting ? 'Adding...' : 'I Stand With Caleigh'}
       </button>
@@ -172,39 +191,34 @@ function ShoutoutModal({ onClose }) {
   const [message, setMessage] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
+  const [error, setError] = useState('')
 
   async function submit(e) {
     e.preventDefault()
     if (!name.trim() || !message.trim() || submitting) return
     setSubmitting(true)
+    setError('')
     try {
       await addDoc(collection(db, 'shoutouts'), { name: name.trim(), message: message.trim(), timestamp: serverTimestamp() })
       setDone(true)
-    } catch (err) { console.error(err) }
+    } catch (err) { setError('Something went wrong. Try again.'); console.error(err) }
     finally { setSubmitting(false) }
   }
 
   if (done) {
-    return (
-      <div className="center-text">
-        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)' }}>Love posted!</p>
-        <p style={{ color: 'var(--gray-400)', marginTop: '8px' }}>Your shoutout is live on the wall.</p>
-        <button onClick={() => { triggerShare(`I showed love for Caleigh Elliott! \u{1F534} ${window.location.origin}`); onClose() }} className="btn btn-primary btn-full" style={{ marginTop: '20px' }}>
-          Share It
-        </button>
-      </div>
-    )
+    return <SuccessScreen emoji={'\u{1F4AC}'} title="Love posted!" subtitle="Your shoutout is live on the wall." shareText="I showed love for Caleigh Elliott! \u{1F534}" onClose={onClose} />
   }
 
   return (
     <form onSubmit={submit}>
-      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '20px' }}>Show Love</p>
+      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '20px' }}>Send a Shoutout</p>
       <div className="space-y">
         <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} className="input-light" />
         <div>
           <textarea placeholder="Show some love (140 chars max)" value={message} onChange={(e) => { if (e.target.value.length <= 140) setMessage(e.target.value) }} rows={3} className="input-light" style={{ resize: 'none' }} />
           <p style={{ color: 'var(--gray-400)', fontSize: '0.75rem', textAlign: 'right', marginTop: '4px' }}>{message.length}/140</p>
         </div>
+        <ErrorBanner message={error} />
         <button type="submit" disabled={submitting || !name.trim() || !message.trim()} className="btn btn-primary btn-full">
           {submitting ? 'Posting...' : 'Post Shoutout'}
         </button>
@@ -219,36 +233,30 @@ function PhotoModal({ onClose }) {
   const [file, setFile] = useState(null)
   const [uploading, setUploading] = useState(false)
   const [done, setDone] = useState(false)
+  const [error, setError] = useState('')
 
   async function submit(e) {
     e.preventDefault()
     if (!file || !name.trim() || uploading) return
     setUploading(true)
+    setError('')
     try {
       const storageRef = ref(storage, `photos/${Date.now()}_${file.name}`)
       await uploadBytes(storageRef, file)
       const url = await getDownloadURL(storageRef)
       await addDoc(collection(db, 'photos'), { name: name.trim(), storageUrl: url, timestamp: serverTimestamp() })
       setDone(true)
-    } catch (err) { console.error(err) }
+    } catch (err) { setError('Upload failed. Check your connection and try again.'); console.error(err) }
     finally { setUploading(false) }
   }
 
   if (done) {
-    return (
-      <div className="center-text">
-        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)' }}>You&rsquo;re on the wall!</p>
-        <p style={{ color: 'var(--gray-400)', marginTop: '8px' }}>Send this to someone who should be up here too.</p>
-        <button onClick={() => { triggerShare("I'm on the wall! Put yourself up too \u{1F534}\u{26AA} " + window.location.origin); onClose() }} className="btn btn-primary btn-full" style={{ marginTop: '20px' }}>
-          Share the Wall
-        </button>
-      </div>
-    )
+    return <SuccessScreen emoji={'\u{1F4F8}'} title="Photo uploaded!" subtitle="You're on the wall. Send this to someone who should be up here too." shareText="I'm on the wall for Caleigh Elliott! Share a photo too \u{1F534}\u{26AA}" onClose={onClose} />
   }
 
   return (
     <form onSubmit={submit}>
-      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '20px' }}>Get On The Wall</p>
+      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '20px' }}>Share a Photo</p>
       <div className="space-y">
         <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} className="input-light" />
         <label style={{ display: 'block', background: 'rgba(204,0,0,0.05)', border: '2px dashed var(--red)', padding: '28px 16px', textAlign: 'center', cursor: 'pointer' }}>
@@ -257,8 +265,9 @@ function PhotoModal({ onClose }) {
             {file ? file.name : 'Tap to choose a photo \u{1F4F8}'}
           </span>
         </label>
+        <ErrorBanner message={error} />
         <button type="submit" disabled={uploading || !file || !name.trim()} className="btn btn-primary btn-full">
-          {uploading ? 'Uploading...' : 'Upload'}
+          {uploading ? 'Uploading...' : 'Upload Photo'}
         </button>
       </div>
     </form>
@@ -271,37 +280,34 @@ function QAModal({ onClose }) {
   const [question, setQuestion] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [done, setDone] = useState(false)
+  const [error, setError] = useState('')
 
   async function submit(e) {
     e.preventDefault()
     if (!name.trim() || !question.trim() || submitting) return
     setSubmitting(true)
+    setError('')
     try {
       await addDoc(collection(db, 'questions'), { name: name.trim(), question: question.trim(), answer: '', status: 'unanswered', timestamp: serverTimestamp() })
       setDone(true)
-    } catch (err) { console.error(err) }
+    } catch (err) { setError('Something went wrong. Try again.'); console.error(err) }
     finally { setSubmitting(false) }
   }
 
   if (done) {
-    return (
-      <div className="center-text">
-        <p style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)' }}>Question sent!</p>
-        <p style={{ color: 'var(--gray-400)', marginTop: '8px' }}>Caleigh reads every one. Stay tuned.</p>
-        <button onClick={onClose} className="btn btn-primary" style={{ marginTop: '20px' }}>Done</button>
-      </div>
-    )
+    return <SuccessScreen emoji={'\u2753'} title="Question sent!" subtitle="Caleigh reads every one. Stay tuned for her answer." shareText="I asked Caleigh Elliott a question! Check out her campaign \u{1F534}" onClose={onClose} />
   }
 
   return (
     <form onSubmit={submit}>
-      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '4px' }}>Ask Caleigh</p>
+      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '4px' }}>Ask a Question</p>
       <p className="center-text" style={{ color: 'var(--gray-400)', fontSize: '0.875rem', marginBottom: '20px' }}>She actually reads these. She actually answers.</p>
       <div className="space-y">
         <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} className="input-light" />
         <textarea placeholder="What do you want to know?" value={question} onChange={(e) => setQuestion(e.target.value)} rows={3} className="input-light" style={{ resize: 'none' }} />
+        <ErrorBanner message={error} />
         <button type="submit" disabled={submitting || !name.trim() || !question.trim()} className="btn btn-primary btn-full">
-          {submitting ? 'Sending...' : 'Submit'}
+          {submitting ? 'Sending...' : 'Submit Question'}
         </button>
       </div>
     </form>
