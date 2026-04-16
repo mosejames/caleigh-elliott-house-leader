@@ -36,14 +36,14 @@ export default function PhotoCarousel() {
       style={{
         overflow: 'hidden',
         background: '#0D0D0C',
-        padding: 'clamp(24px, 4vw, 40px) 0',
+        padding: 0,
       }}
     >
       <div
         className="photo-carousel-track"
         style={{
           display: 'flex',
-          gap: '14px',
+          gap: 0,
           width: 'max-content',
           animation: 'photo-carousel-scroll 60s linear infinite',
         }}
@@ -57,7 +57,7 @@ export default function PhotoCarousel() {
             loading={i < shuffled.length ? 'eager' : 'lazy'}
             decoding="async"
             style={{
-              height: 'clamp(240px, 44vh, 460px)',
+              height: 'clamp(150px, 26vh, 300px)',
               width: 'auto',
               display: 'block',
               flexShrink: 0,
