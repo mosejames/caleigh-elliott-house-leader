@@ -14,6 +14,13 @@ const ACTIONS = [
 export default function ActionHub() {
   const [active, setActive] = useState(null)
 
+  // Lets MemoryPopup open the memory modal from anywhere on the page.
+  useEffect(() => {
+    const onOpenMemory = () => setActive('shoutout')
+    window.addEventListener('openMemory', onOpenMemory)
+    return () => window.removeEventListener('openMemory', onOpenMemory)
+  }, [])
+
   return (
     <section className="section" style={{ background: 'var(--gray-100)' }}>
       <div className="contain center-text">
@@ -224,6 +231,7 @@ function ShoutoutModal({ onClose }) {
       }
 
       await addDoc(collection(db, 'shoutouts'), { name: name.trim(), message: message.trim(), timestamp: serverTimestamp() })
+      try { sessionStorage.setItem('memory-submitted', '1') } catch {}
       setDone(true)
     } catch (err) { setError('Something went wrong. Try again.'); console.error(err) }
     finally { setSubmitting(false) }

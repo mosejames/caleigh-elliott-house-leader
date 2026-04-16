@@ -57,6 +57,7 @@ export default function PhotoCarousel() {
 
   return (
     <section
+      id="photo-carousel"
       aria-label="Photos of Caleigh and friends"
       style={{
         overflow: 'hidden',

@@ -8,6 +8,7 @@ import ActionHub from './components/ActionHub.jsx'
 import CommunityFeed from './components/CommunityFeed.jsx'
 import Footer from './components/Footer.jsx'
 import FloatingShare from './components/FloatingShare.jsx'
+import MemoryPopup from './components/MemoryPopup.jsx'
 import AdminPanel from './components/AdminPanel.jsx'
 
 function HomePage() {
@@ -22,6 +23,7 @@ function HomePage() {
       <CommunityFeed />
       <Footer />
       <FloatingShare />
+      <MemoryPopup />
     </>
   )
 }
