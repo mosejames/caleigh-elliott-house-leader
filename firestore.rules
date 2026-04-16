@@ -15,11 +15,10 @@ service cloud.firestore {
                     && request.resource.data.name is string
                     && request.resource.data.name.size() > 0
                     && request.resource.data.name.size() <= 30;
-      // Admin moderation — allow delete from the /admin panel
-      allow delete: if true;
+      // Deletes performed by admin SDK bypass these rules.
     }
 
-    // Shoutouts - anyone can read and create; admin can moderate
+    // Shoutouts - anyone can read and create; admin SDK moderates via /api/admin-delete
     match /shoutouts/{shoutout} {
       allow read: if true;
       allow create: if request.resource.data.keys().hasAll(['name', 'message', 'timestamp'])
@@ -27,19 +26,17 @@ service cloud.firestore {
                     && request.resource.data.message is string
                     && request.resource.data.name.size() > 0
                     && request.resource.data.message.size() <= 140;
-      allow delete: if true;
     }
 
-    // Photos metadata - anyone can read and create; admin can moderate
+    // Photos metadata - anyone can read and create; admin SDK moderates via /api/admin-delete
     match /photos/{photo} {
       allow read: if true;
       allow create: if request.resource.data.keys().hasAll(['name', 'storageUrl', 'timestamp'])
                     && request.resource.data.name is string
                     && request.resource.data.storageUrl is string;
-      allow delete: if true;
     }
 
-    // Questions - anyone can read answered, anyone can create
+    // Questions - anyone can read answered, anyone can create; admin SDK moderates
     match /questions/{question} {
       allow read: if true;
       allow create: if request.resource.data.keys().hasAll(['name', 'question', 'answer', 'status', 'timestamp'])
@@ -48,7 +45,6 @@ service cloud.firestore {
       allow update: if request.resource.data.status == 'answered'
                     && request.resource.data.answer is string
                     && request.resource.data.answer.size() > 0;
-      allow delete: if true;
     }
   }
 }

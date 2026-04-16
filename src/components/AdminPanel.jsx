@@ -7,33 +7,53 @@ import {
   where,
   orderBy,
   updateDoc,
-  deleteDoc,
   doc,
 } from 'firebase/firestore'
 
-const PASSWORD = 'amistad2027'
-
 export default function AdminPanel() {
   const [authenticated, setAuthenticated] = useState(false)
+  const [password, setPassword] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
   const [error, setError] = useState('')
+  const [loggingIn, setLoggingIn] = useState(false)
   const [tab, setTab] = useState('qa')
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault()
-    if (passwordInput === PASSWORD) {
+    if (!passwordInput) return
+    setLoggingIn(true)
+    setError('')
+    try {
+      const res = await fetch('/api/admin-verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: passwordInput }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) throw new Error(data?.error || `HTTP ${res.status}`)
+      setPassword(passwordInput)
       setAuthenticated(true)
-      setError('')
-    } else {
-      setError('Wrong password')
+      setPasswordInput('')
+    } catch (err) {
+      setError(err.message || 'Login failed')
+    } finally {
+      setLoggingIn(false)
     }
+  }
+
+  function signOut() {
+    setAuthenticated(false)
+    setPassword('')
+    setError('')
   }
 
   if (!authenticated) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--white)' }}>
-        <form onSubmit={handleLogin} style={{ textAlign: 'center', maxWidth: '320px', padding: '0 24px' }}>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.75rem', marginBottom: '20px', color: 'var(--ink, #262626)' }}>Admin Login</h1>
+        <form onSubmit={handleLogin} style={{ textAlign: 'center', maxWidth: '320px', padding: '0 24px', width: '100%' }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '1.75rem', marginBottom: '20px', color: 'var(--gray-800)' }}>
+            Admin Login
+          </h1>
           <input
             type="password"
             placeholder="Password"
@@ -42,10 +62,10 @@ export default function AdminPanel() {
             className="input-light"
             autoFocus
           />
-          <button type="submit" className="btn btn-primary btn-full" style={{ marginTop: '16px' }}>
-            Enter
+          <button type="submit" disabled={loggingIn || !passwordInput} className="btn btn-primary btn-full" style={{ marginTop: '16px' }}>
+            {loggingIn ? 'Checking…' : 'Enter'}
           </button>
-          {error && <p style={{ color: 'var(--red)', fontWeight: 600, marginTop: '12px' }}>{error}</p>}
+          {error && <p style={{ color: 'var(--red)', fontWeight: 600, marginTop: '12px', fontSize: '0.9rem' }}>{error}</p>}
         </form>
       </div>
     )
@@ -60,11 +80,16 @@ export default function AdminPanel() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--gray-100)', padding: '32px 24px' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '2rem', color: 'var(--red)', marginBottom: '24px' }}>
-          Admin
-        </h1>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '2rem', color: 'var(--red)' }}>
+            Admin
+          </h1>
+          <button onClick={signOut} style={{ background: 'transparent', border: 'none', color: 'var(--gray-600)', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.1em', cursor: 'pointer' }}>
+            Sign out
+          </button>
+        </div>
 
-        <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', borderBottom: '2px solid var(--gray-200)' }}>
+        <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', borderBottom: '2px solid var(--gray-200)', overflowX: 'auto' }}>
           {TABS.map((t) => (
             <button
               key={t.id}
@@ -82,6 +107,7 @@ export default function AdminPanel() {
                 color: tab === t.id ? 'var(--red)' : 'var(--gray-400)',
                 borderBottom: tab === t.id ? '2px solid var(--red)' : '2px solid transparent',
                 marginBottom: '-2px',
+                whiteSpace: 'nowrap',
               }}
             >
               {t.label}
@@ -89,20 +115,39 @@ export default function AdminPanel() {
           ))}
         </div>
 
-        {tab === 'qa' && <QATab />}
-        {tab === 'shoutouts' && <ShoutoutsTab />}
-        {tab === 'photos' && <PhotosTab />}
+        {tab === 'qa' && <QATab password={password} onAuthFail={signOut} />}
+        {tab === 'shoutouts' && <ShoutoutsTab password={password} onAuthFail={signOut} />}
+        {tab === 'photos' && <PhotosTab password={password} onAuthFail={signOut} />}
       </div>
     </div>
   )
 }
 
+/* ── Shared delete helper ── */
+async function serverDelete({ password, collection, id, onAuthFail }) {
+  const res = await fetch('/api/admin-delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password, collection, id }),
+  })
+  const data = await res.json().catch(() => ({}))
+  if (res.status === 401) {
+    onAuthFail?.()
+    throw new Error('Session expired. Please log in again.')
+  }
+  if (!res.ok) {
+    throw new Error(data?.error || `HTTP ${res.status}`)
+  }
+  return data
+}
+
 /* ── Q & A ── */
-function QATab() {
+function QATab({ password, onAuthFail }) {
   const [unanswered, setUnanswered] = useState([])
   const [answeredList, setAnsweredList] = useState([])
   const [answers, setAnswers] = useState({})
   const [busy, setBusy] = useState({})
+  const [error, setError] = useState('')
 
   useEffect(() => {
     const unsubs = []
@@ -121,20 +166,25 @@ function QATab() {
     const text = answers[id]
     if (!text?.trim()) return
     setBusy((p) => ({ ...p, [id]: true }))
+    setError('')
     try {
       await updateDoc(doc(db, 'questions', id), { answer: text.trim(), status: 'answered' })
       setAnswers((p) => { const n = { ...p }; delete n[id]; return n })
-    } catch (e) { console.error(e) }
+    } catch (e) { setError(e.message) }
     finally { setBusy((p) => ({ ...p, [id]: false })) }
   }
 
   async function remove(id) {
     if (!confirm('Delete this question?')) return
-    try { await deleteDoc(doc(db, 'questions', id)) } catch (e) { console.error(e) }
+    setError('')
+    try {
+      await serverDelete({ password, collection: 'questions', id, onAuthFail })
+    } catch (e) { setError(e.message) }
   }
 
   return (
     <>
+      {error && <ErrorBanner message={error} />}
       <Section title={`Unanswered (${unanswered.length})`}>
         {unanswered.length === 0 && <EmptyState>No unanswered questions.</EmptyState>}
         {unanswered.map((item) => (
@@ -149,7 +199,7 @@ function QATab() {
               className="input-light"
               style={{ resize: 'none', marginBottom: '12px' }}
             />
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
               <button
                 onClick={() => publish(item.id)}
                 disabled={busy[item.id] || !answers[item.id]?.trim()}
@@ -184,8 +234,9 @@ function QATab() {
 }
 
 /* ── Shoutouts ── */
-function ShoutoutsTab() {
+function ShoutoutsTab({ password, onAuthFail }) {
   const [items, setItems] = useState([])
+  const [error, setError] = useState('')
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -197,28 +248,35 @@ function ShoutoutsTab() {
 
   async function remove(id) {
     if (!confirm('Delete this shoutout?')) return
-    try { await deleteDoc(doc(db, 'shoutouts', id)) } catch (e) { console.error(e) }
+    setError('')
+    try {
+      await serverDelete({ password, collection: 'shoutouts', id, onAuthFail })
+    } catch (e) { setError(e.message) }
   }
 
   return (
-    <Section title={`All Shoutouts (${items.length})`}>
-      {items.length === 0 && <EmptyState>No shoutouts yet.</EmptyState>}
-      {items.map((item) => (
-        <Card key={item.id}>
-          <Meta>{item.name}</Meta>
-          <p style={{ color: 'var(--gray-800)' }}>{item.message}</p>
-          <button onClick={() => remove(item.id)} className="btn" style={{ marginTop: '12px', background: 'var(--gray-200)', color: 'var(--gray-800)', fontSize: '0.85rem', padding: '10px 18px' }}>
-            Delete
-          </button>
-        </Card>
-      ))}
-    </Section>
+    <>
+      {error && <ErrorBanner message={error} />}
+      <Section title={`All Shoutouts (${items.length})`}>
+        {items.length === 0 && <EmptyState>No shoutouts yet.</EmptyState>}
+        {items.map((item) => (
+          <Card key={item.id}>
+            <Meta>{item.name}</Meta>
+            <p style={{ color: 'var(--gray-800)' }}>{item.message}</p>
+            <button onClick={() => remove(item.id)} className="btn" style={{ marginTop: '12px', background: 'var(--gray-200)', color: 'var(--gray-800)', fontSize: '0.85rem', padding: '10px 18px' }}>
+              Delete
+            </button>
+          </Card>
+        ))}
+      </Section>
+    </>
   )
 }
 
 /* ── Photos ── */
-function PhotosTab() {
+function PhotosTab({ password, onAuthFail }) {
   const [items, setItems] = useState([])
+  const [error, setError] = useState('')
 
   useEffect(() => {
     const unsub = onSnapshot(
@@ -230,28 +288,34 @@ function PhotosTab() {
 
   async function remove(id) {
     if (!confirm('Delete this photo? (Removes from the feed; the storage file stays.)')) return
-    try { await deleteDoc(doc(db, 'photos', id)) } catch (e) { console.error(e) }
+    setError('')
+    try {
+      await serverDelete({ password, collection: 'photos', id, onAuthFail })
+    } catch (e) { setError(e.message) }
   }
 
   return (
-    <Section title={`All Photos (${items.length})`}>
-      {items.length === 0 && <EmptyState>No photos yet.</EmptyState>}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
-        {items.map((item) => (
-          <div key={item.id} style={{ background: 'var(--white)', padding: '12px' }}>
-            <img src={item.storageUrl} alt={item.name} style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block', marginBottom: '10px' }} />
-            <Meta>{item.name}</Meta>
-            <button onClick={() => remove(item.id)} className="btn btn-full" style={{ background: 'var(--gray-200)', color: 'var(--gray-800)', fontSize: '0.8rem', padding: '8px 12px', marginTop: '8px' }}>
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
-    </Section>
+    <>
+      {error && <ErrorBanner message={error} />}
+      <Section title={`All Photos (${items.length})`}>
+        {items.length === 0 && <EmptyState>No photos yet.</EmptyState>}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '16px' }}>
+          {items.map((item) => (
+            <div key={item.id} style={{ background: 'var(--white)', padding: '12px' }}>
+              <img src={item.storageUrl} alt={item.name} style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block', marginBottom: '10px' }} />
+              <Meta>{item.name}</Meta>
+              <button onClick={() => remove(item.id)} className="btn btn-full" style={{ background: 'var(--gray-200)', color: 'var(--gray-800)', fontSize: '0.8rem', padding: '8px 12px', marginTop: '8px' }}>
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+      </Section>
+    </>
   )
 }
 
-/* ── Shared primitives ── */
+/* ── Primitives ── */
 function Section({ title, children }) {
   return (
     <section style={{ marginBottom: '40px' }}>
@@ -281,4 +345,13 @@ function Meta({ children }) {
 
 function EmptyState({ children }) {
   return <p style={{ color: 'var(--gray-400)' }}>{children}</p>
+}
+
+function ErrorBanner({ message }) {
+  if (!message) return null
+  return (
+    <div style={{ background: '#FEE2E2', color: '#991B1B', padding: '12px 16px', fontSize: '0.9rem', fontWeight: 600, marginBottom: '16px', borderLeft: '4px solid #991B1B' }}>
+      {message}
+    </div>
+  )
 }
