@@ -15,10 +15,10 @@ export default function ActionHub() {
   const [active, setActive] = useState(null)
 
   return (
-    <section className="section section-red grain" style={{ position: 'relative' }}>
-      <div className="contain center-text" style={{ position: 'relative' }}>
-        <h2 className="heading-section" style={{ color: 'var(--white)' }}>Help Me Out?</h2>
-        <p style={{ color: 'var(--white-muted)', marginTop: '12px', fontSize: '1rem', maxWidth: '520px', margin: '12px auto 0' }}>
+    <section className="section" style={{ background: 'var(--gray-100)' }}>
+      <div className="contain center-text">
+        <h2 className="heading-section" style={{ color: 'var(--red)' }}>Help Me Out?</h2>
+        <p style={{ color: 'var(--gray-600)', marginTop: '12px', fontSize: '1rem', maxWidth: '520px', margin: '12px auto 0' }}>
           A kind word or a pic would mean a lot. No pressure &#x1F49B;
         </p>
 
@@ -29,24 +29,32 @@ export default function ActionHub() {
               key={a.id}
               onClick={() => setActive(a.id)}
               style={{
-                background: 'var(--white)',
+                background: 'var(--red)',
+                color: 'var(--white)',
                 border: 'none',
-                padding: '24px 16px',
+                padding: '28px 20px',
                 cursor: 'pointer',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '10px',
+                gap: '12px',
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                boxShadow: '0 10px 28px rgba(204, 0, 0, 0.22), 0 2px 6px rgba(0, 0, 0, 0.08)',
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.03)'; e.currentTarget.style.boxShadow = '0 8px 32px rgba(0,0,0,0.2)' }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = 'none' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.03)'
+                e.currentTarget.style.boxShadow = '0 16px 40px rgba(204, 0, 0, 0.38), 0 4px 12px rgba(0, 0, 0, 0.12)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)'
+                e.currentTarget.style.boxShadow = '0 10px 28px rgba(204, 0, 0, 0.22), 0 2px 6px rgba(0, 0, 0, 0.08)'
+              }}
             >
               <a.icon />
-              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.85rem', color: 'var(--red)', textTransform: 'uppercase', letterSpacing: '0.03em' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--white)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 {a.label}
               </span>
-              <span style={{ fontSize: '0.72rem', color: 'var(--gray-400)', marginTop: '-4px' }}>
+              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.78)', marginTop: '-2px' }}>
                 {a.sub}
               </span>
             </button>
@@ -76,14 +84,14 @@ function PledgeIcon({ size = 28 }) {
 }
 function ShoutoutIcon() {
   return (
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#CC0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
     </svg>
   )
 }
 function PhotoIcon() {
   return (
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#CC0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="3" y="3" width="18" height="18" rx="0" />
       <circle cx="8.5" cy="8.5" r="1.5" />
       <path d="M21 15l-5-5L5 21" />
@@ -92,7 +100,7 @@ function PhotoIcon() {
 }
 function QAIcon() {
   return (
-    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#CC0000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="10" />
       <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
       <line x1="12" y1="17" x2="12.01" y2="17" />
