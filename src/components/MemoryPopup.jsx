@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 
 /**
- * Floating card that appears once the visitor has scrolled just past the
- * photo carousel, warmly inviting them to share a memory. Tapping "Share"
- * fires a custom window event that ActionHub listens for and opens the
- * memory-submission modal. Dismissal is session-scoped.
+ * Modal-style popup that appears right after the visitor scrolls past the
+ * photo carousel. Tinted backdrop, centered gold card, red text. Stays open
+ * until dismissed (×, Esc, or backdrop click) or until they tap Share,
+ * which fires a window event ActionHub listens for.
  */
 export default function MemoryPopup() {
   const [visible, setVisible] = useState(false)
@@ -19,15 +19,14 @@ export default function MemoryPopup() {
     }
   })
 
+  // Scroll trigger — fire right as the carousel passes above the viewport.
   useEffect(() => {
     if (dismissed || visible) return
 
     const check = () => {
       const el = document.getElementById('photo-carousel')
       if (!el) return
-      // Trigger once the carousel's bottom is ~80px above the viewport top —
-      // visitor has scrolled a little past the pictures.
-      if (el.getBoundingClientRect().bottom < -80) {
+      if (el.getBoundingClientRect().bottom < 0) {
         setVisible(true)
         window.removeEventListener('scroll', check)
       }
@@ -37,6 +36,27 @@ export default function MemoryPopup() {
     window.addEventListener('scroll', check, { passive: true })
     return () => window.removeEventListener('scroll', check)
   }, [dismissed, visible])
+
+  // Lock page scroll while the popup is up.
+  useEffect(() => {
+    if (!visible) return
+    const original = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = original
+    }
+  }, [visible])
+
+  // Esc key to dismiss.
+  useEffect(() => {
+    if (!visible) return
+    const onKey = (e) => {
+      if (e.key === 'Escape') handleDismiss()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible])
 
   function handleDismiss() {
     setVisible(false)
@@ -57,97 +77,144 @@ export default function MemoryPopup() {
   return (
     <div
       role="dialog"
+      aria-modal="true"
       aria-label="Share a memory of Caleigh"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) handleDismiss()
+      }}
       style={{
         position: 'fixed',
-        bottom: 'max(16px, env(safe-area-inset-bottom))',
-        left: '16px',
-        right: '16px',
-        margin: '0 auto',
-        maxWidth: '440px',
-        zIndex: 40,
-        background: 'var(--red)',
-        color: 'var(--white)',
-        padding: '16px 18px',
-        boxShadow: '0 16px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.15)',
+        inset: 0,
+        background: 'rgba(0, 0, 0, 0.65)',
+        backdropFilter: 'blur(6px)',
+        WebkitBackdropFilter: 'blur(6px)',
         display: 'flex',
         alignItems: 'center',
-        gap: '12px',
-        animation: 'memory-popup-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        justifyContent: 'center',
+        padding: '20px',
+        zIndex: 45,
+        animation: 'memory-fade-in 0.28s ease-out forwards',
       }}
     >
-      <span
-        aria-hidden="true"
-        style={{ fontSize: '1.6rem', lineHeight: 1, flexShrink: 0 }}
+      <div
+        style={{
+          position: 'relative',
+          background: 'var(--gold)',
+          color: 'var(--red)',
+          maxWidth: '520px',
+          width: '100%',
+          padding: 'clamp(32px, 6vw, 52px) clamp(24px, 5vw, 44px)',
+          textAlign: 'center',
+          boxShadow:
+            '0 48px 120px rgba(0, 0, 0, 0.6), 0 18px 48px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(204, 0, 0, 0.08)',
+          animation: 'memory-pop-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        }}
       >
-        &#x1F49B;
-      </span>
+        <button
+          onClick={handleDismiss}
+          aria-label="Dismiss"
+          style={{
+            position: 'absolute',
+            top: '10px',
+            right: '12px',
+            background: 'transparent',
+            border: 'none',
+            color: 'var(--red)',
+            fontSize: '1.9rem',
+            lineHeight: 1,
+            cursor: 'pointer',
+            padding: '6px 10px',
+            fontWeight: 800,
+            fontFamily: 'var(--font-display)',
+          }}
+        >
+          &times;
+        </button>
 
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <p
+        <h2
           style={{
             fontFamily: 'var(--font-display)',
-            fontWeight: 800,
-            fontSize: 'clamp(0.95rem, 2.4vw, 1.05rem)',
-            lineHeight: 1.25,
-            marginBottom: '2px',
+            fontWeight: 900,
+            fontSize: 'clamp(1.75rem, 5.5vw, 2.4rem)',
+            lineHeight: 1.05,
+            letterSpacing: '-0.02em',
+            color: 'var(--red)',
+            textTransform: 'uppercase',
+            marginBottom: '16px',
           }}
         >
           Got a favorite memory of us?
-        </p>
+        </h2>
+
         <p
+          className="text-balance"
           style={{
-            fontSize: 'clamp(0.75rem, 1.9vw, 0.82rem)',
-            color: 'var(--white-muted)',
-            lineHeight: 1.35,
+            fontFamily: 'var(--font-body)',
+            fontSize: 'clamp(1rem, 2.6vw, 1.15rem)',
+            lineHeight: 1.5,
+            color: 'var(--red)',
+            opacity: 0.85,
+            marginBottom: 'clamp(28px, 4.5vw, 36px)',
+            maxWidth: '400px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
           }}
         >
           A laugh, a project, a pep talk &mdash; tell the story.
         </p>
+
+        <button
+          onClick={handleShare}
+          style={{
+            background: 'var(--red)',
+            color: 'var(--white)',
+            border: 'none',
+            padding: '18px 40px',
+            fontFamily: 'var(--font-display)',
+            fontWeight: 900,
+            fontSize: 'clamp(0.95rem, 2.6vw, 1.1rem)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            cursor: 'pointer',
+            boxShadow: '0 10px 28px rgba(204, 0, 0, 0.35), 0 4px 10px rgba(204, 0, 0, 0.2)',
+            transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'scale(1.04)'
+            e.currentTarget.style.boxShadow = '0 16px 40px rgba(204, 0, 0, 0.45), 0 6px 14px rgba(204, 0, 0, 0.3)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'scale(1)'
+            e.currentTarget.style.boxShadow = '0 10px 28px rgba(204, 0, 0, 0.35), 0 4px 10px rgba(204, 0, 0, 0.2)'
+          }}
+        >
+          Share a Memory &rarr;
+        </button>
+
+        <p
+          style={{
+            fontFamily: 'var(--font-display)',
+            fontSize: '0.75rem',
+            color: 'var(--red)',
+            opacity: 0.55,
+            marginTop: '18px',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            fontWeight: 600,
+          }}
+        >
+          No pressure &mdash; close anytime
+        </p>
       </div>
 
-      <button
-        onClick={handleShare}
-        style={{
-          background: 'var(--gold)',
-          color: 'var(--red)',
-          border: 'none',
-          padding: '10px 14px',
-          fontFamily: 'var(--font-display)',
-          fontWeight: 900,
-          fontSize: '0.78rem',
-          textTransform: 'uppercase',
-          letterSpacing: '0.08em',
-          cursor: 'pointer',
-          flexShrink: 0,
-          whiteSpace: 'nowrap',
-        }}
-      >
-        Share &rarr;
-      </button>
-
-      <button
-        onClick={handleDismiss}
-        aria-label="Dismiss"
-        style={{
-          background: 'transparent',
-          border: 'none',
-          color: 'var(--white-muted)',
-          fontSize: '1.4rem',
-          lineHeight: 1,
-          cursor: 'pointer',
-          padding: '4px 4px 4px 0',
-          flexShrink: 0,
-          marginLeft: '-6px',
-        }}
-      >
-        &times;
-      </button>
-
       <style>{`
-        @keyframes memory-popup-in {
-          from { opacity: 0; transform: translateY(24px); }
-          to { opacity: 1; transform: translateY(0); }
+        @keyframes memory-fade-in {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes memory-pop-in {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
         }
       `}</style>
     </div>
