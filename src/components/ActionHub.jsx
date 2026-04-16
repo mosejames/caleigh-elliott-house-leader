@@ -235,6 +235,19 @@ function ShoutoutModal({ onClose }) {
     setSubmitting(true)
     setError('')
     try {
+      // AI moderation first — keeps bad content out of Firestore
+      const modRes = await fetch('/api/moderate-shoutout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name.trim(), message: message.trim() }),
+      })
+      const mod = await modRes.json().catch(() => ({}))
+      if (mod?.decision === 'reject') {
+        setError(mod.rephrase_hint || "That doesn't quite fit the vibe — try rephrasing?")
+        setSubmitting(false)
+        return
+      }
+
       await addDoc(collection(db, 'shoutouts'), { name: name.trim(), message: message.trim(), timestamp: serverTimestamp() })
       setDone(true)
     } catch (err) { setError('Something went wrong. Try again.'); console.error(err) }
