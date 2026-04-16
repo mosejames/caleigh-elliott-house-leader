@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 
 const PHOTOS = [
   '/photos/123_1.jpeg',
@@ -30,6 +30,31 @@ export default function PhotoCarousel() {
   // Duplicate once so we can translate by -50% for a seamless loop
   const doubled = [...shuffled, ...shuffled]
 
+  // Only start the CSS animation once every image has fully loaded. On iOS
+  // WebKit the flex track's max-content width is computed from each <img>'s
+  // intrinsic size — if the animation starts before images load, the track
+  // is (near) zero-wide, translateX(-50%) moves nothing, and the section
+  // paints as the black background.
+  const [ready, setReady] = useState(false)
+  useEffect(() => {
+    let cancelled = false
+    const loads = PHOTOS.map(
+      (src) =>
+        new Promise((resolve) => {
+          const img = new Image()
+          img.onload = resolve
+          img.onerror = resolve
+          img.src = src
+        }),
+    )
+    Promise.all(loads).then(() => {
+      if (!cancelled) setReady(true)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   return (
     <section
       aria-label="Photos of Caleigh and friends"
@@ -45,7 +70,7 @@ export default function PhotoCarousel() {
           display: 'flex',
           gap: 0,
           width: 'max-content',
-          animation: 'photo-carousel-scroll 60s linear infinite',
+          animation: ready ? 'photo-carousel-scroll 60s linear infinite' : 'none',
           willChange: 'transform',
           transform: 'translate3d(0, 0, 0)',
         }}
