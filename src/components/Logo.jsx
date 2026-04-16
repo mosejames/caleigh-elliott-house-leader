@@ -47,7 +47,7 @@ export default function Logo() {
             margin: '0 auto',
           }}
         >
-          I&rsquo;m running to be your next Amistad House Leader for 2026&ndash;2027. Our election is <strong style={{ color: 'var(--red)', fontWeight: 700 }}>April 20</strong>. If you believe in me, a shout, a pic, or just a kind word would mean the world.
+          I&rsquo;m running to be your next Amistad House Leader for 2026&ndash;2027. Amistad staff makes the call &mdash; but if we&rsquo;ve worked on something together, share the memory. A note, a pic, anything that says <strong style={{ color: 'var(--red)', fontWeight: 700 }}>Team Caleigh</strong>.
         </p>
       </div>
     </section>

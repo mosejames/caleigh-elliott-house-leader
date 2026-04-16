@@ -1,13 +1,4 @@
 export default function ElectionBanner() {
-  const target = new Date('2026-04-20T00:00:00')
-  const now = new Date()
-  const days = Math.max(0, Math.ceil((target.getTime() - now.getTime()) / 86400000))
-
-  const countdown =
-    days === 0 ? 'Today is the day \u{1F49B}' :
-    days === 1 ? 'Tomorrow is the day. Thanks for being in my corner. \u{1F49B}' :
-                 `${days} days to go. Thanks for being in my corner. \u{1F49B}`
-
   return (
     <section
       className="grain"
@@ -15,7 +6,7 @@ export default function ElectionBanner() {
         position: 'relative',
         background: 'var(--red)',
         color: 'var(--white)',
-        padding: 'clamp(40px, 6vw, 72px) 24px',
+        padding: 'clamp(56px, 9vw, 96px) 24px',
         textAlign: 'center',
         overflow: 'hidden',
       }}
@@ -29,41 +20,54 @@ export default function ElectionBanner() {
             textTransform: 'uppercase',
             letterSpacing: '0.25em',
             color: 'var(--gold)',
-            marginBottom: '14px',
+            marginBottom: '22px',
           }}
         >
-          Election Day
+          How I Show Up
         </p>
+
         <p
+          className="text-balance"
           style={{
             fontFamily: 'var(--font-display)',
-            fontWeight: 900,
-            fontSize: 'clamp(3rem, 12vw, 6rem)',
-            lineHeight: 0.95,
-            letterSpacing: '-0.03em',
-            textTransform: 'uppercase',
+            fontWeight: 800,
+            fontStyle: 'italic',
+            fontSize: 'clamp(1.45rem, 4vw, 2.4rem)',
+            lineHeight: 1.2,
+            letterSpacing: '-0.01em',
+            maxWidth: '820px',
+            margin: '0 auto',
           }}
         >
-          April 20
+          Servant leadership &mdash; not glitz or glam.
+          <br />
+          Driven by purpose, not title.
         </p>
+
         <div
           style={{
             width: '72px',
             height: '4px',
             background: 'var(--gold)',
-            margin: '20px auto 0',
+            margin: '28px auto 0',
           }}
         />
+
         <p
+          className="text-balance"
           style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 700,
-            fontSize: 'clamp(0.95rem, 2.5vw, 1.15rem)',
-            marginTop: '20px',
-            color: 'var(--white)',
+            fontFamily: 'var(--font-body)',
+            fontWeight: 500,
+            fontSize: 'clamp(0.95rem, 2.2vw, 1.1rem)',
+            lineHeight: 1.6,
+            color: 'var(--white-soft)',
+            marginTop: '24px',
+            maxWidth: '560px',
+            marginLeft: 'auto',
+            marginRight: 'auto',
           }}
         >
-          {countdown}
+          I&rsquo;d serve Amistad whether I&rsquo;m chosen or not. That&rsquo;s already what being a leader means to me.
         </p>
       </div>
     </section>

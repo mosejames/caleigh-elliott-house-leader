@@ -7,8 +7,8 @@ import confetti from 'canvas-confetti'
 import Family from './Family.jsx'
 
 const ACTIONS = [
-  { id: 'shoutout', icon: ShoutoutIcon, label: 'Send Me a Note', sub: 'Drop a kind word' },
-  { id: 'photo', icon: PhotoIcon, label: 'Post a Pic', sub: 'Share a pic with me' },
+  { id: 'shoutout', icon: ShoutoutIcon, label: 'Share a Memory', sub: 'A moment we\u2019ve had' },
+  { id: 'photo', icon: PhotoIcon, label: 'Post a Pic', sub: 'Share a pic of us' },
 ]
 
 export default function ActionHub() {
@@ -17,9 +17,9 @@ export default function ActionHub() {
   return (
     <section className="section" style={{ background: 'var(--gray-100)' }}>
       <div className="contain center-text">
-        <h2 className="heading-section" style={{ color: 'var(--red)' }}>Help Me Out?</h2>
-        <p style={{ color: 'var(--gray-600)', marginTop: '12px', fontSize: '1rem', maxWidth: '520px', margin: '12px auto 0' }}>
-          A kind word or a pic would mean a lot. No pressure &#x1F49B;
+        <h2 className="heading-section" style={{ color: 'var(--red)' }}>Team Caleigh</h2>
+        <p style={{ color: 'var(--gray-600)', marginTop: '12px', fontSize: '1rem', maxWidth: '540px', margin: '12px auto 0' }}>
+          If we&rsquo;ve worked on something together, share the memory. A pic or a kind word counts too. &#x1F49B;
         </p>
 
         {/* Photo + Shoutout tiles */}
@@ -235,11 +235,12 @@ function ShoutoutModal({ onClose }) {
 
   return (
     <form onSubmit={submit}>
-      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '20px' }}>Send Me a Note</p>
+      <p className="center-text" style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', color: 'var(--red)', marginBottom: '6px' }}>Share a Memory</p>
+      <p className="center-text" style={{ color: 'var(--gray-400)', fontSize: '0.875rem', marginBottom: '20px' }}>A moment we&rsquo;ve worked on something together.</p>
       <div className="space-y">
         <input type="text" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} className="input-light" />
         <div>
-          <textarea placeholder="Drop a kind word (140 chars)" value={message} onChange={(e) => { if (e.target.value.length <= 140) setMessage(e.target.value) }} rows={3} className="input-light" style={{ resize: 'none' }} />
+          <textarea placeholder="A time we worked together, a project, a pep talk, anything (140 chars)" value={message} onChange={(e) => { if (e.target.value.length <= 140) setMessage(e.target.value) }} rows={3} className="input-light" style={{ resize: 'none' }} />
           <p style={{ color: 'var(--gray-400)', fontSize: '0.75rem', textAlign: 'right', marginTop: '4px' }}>{message.length}/140</p>
         </div>
         <ErrorBanner message={error} />
