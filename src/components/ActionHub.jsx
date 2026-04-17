@@ -36,8 +36,8 @@ export default function ActionHub() {
               key={a.id}
               onClick={() => setActive(a.id)}
               style={{
-                background: 'var(--red)',
-                color: 'var(--white)',
+                background: 'var(--gold)',
+                color: 'var(--red)',
                 border: 'none',
                 padding: '28px 20px',
                 cursor: 'pointer',
@@ -46,22 +46,22 @@ export default function ActionHub() {
                 alignItems: 'center',
                 gap: '12px',
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                boxShadow: '0 10px 28px rgba(204, 0, 0, 0.22), 0 2px 6px rgba(0, 0, 0, 0.08)',
+                boxShadow: '0 10px 28px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08)',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.03)'
-                e.currentTarget.style.boxShadow = '0 16px 40px rgba(204, 0, 0, 0.38), 0 4px 12px rgba(0, 0, 0, 0.12)'
+                e.currentTarget.style.boxShadow = '0 16px 40px rgba(0, 0, 0, 0.28), 0 4px 12px rgba(0, 0, 0, 0.12)'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'scale(1)'
-                e.currentTarget.style.boxShadow = '0 10px 28px rgba(204, 0, 0, 0.22), 0 2px 6px rgba(0, 0, 0, 0.08)'
+                e.currentTarget.style.boxShadow = '0 10px 28px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08)'
               }}
             >
               <a.icon />
-              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '0.9rem', color: 'var(--white)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <span style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '0.9rem', color: 'var(--red)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                 {a.label}
               </span>
-              <span style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.78)', marginTop: '-2px' }}>
+              <span style={{ fontSize: '0.75rem', color: 'var(--red)', opacity: 0.7, marginTop: '-2px' }}>
                 {a.sub}
               </span>
             </button>
