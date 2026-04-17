@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-const VIDEO_ID = '5qXUkh6P9gg'
+const VIDEO_ID = 'nWhfZ545J8c'
 
 /**
  * Lite-YouTube pattern with a silent MP4 teaser:
