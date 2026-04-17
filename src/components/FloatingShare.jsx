@@ -13,7 +13,7 @@ export default function FloatingShare() {
           zIndex: 50,
           background: 'var(--gold)',
           color: 'var(--red)',
-          padding: '14px 20px',
+          padding: '14px 22px',
           border: 'none',
           cursor: 'pointer',
           display: 'inline-flex',
@@ -24,6 +24,7 @@ export default function FloatingShare() {
           fontSize: 'clamp(0.82rem, 2vw, 0.9rem)',
           textTransform: 'uppercase',
           letterSpacing: '0.08em',
+          boxShadow: '0 12px 28px rgba(0, 0, 0, 0.28), 0 4px 10px rgba(0, 0, 0, 0.15)',
           WebkitTapHighlightColor: 'transparent',
         }}
         aria-label="Tell a friend about Caleigh's campaign"
@@ -44,34 +45,23 @@ export default function FloatingShare() {
           <polyline points="16 6 12 2 8 6" />
           <line x1="12" y1="2" x2="12" y2="15" />
         </svg>
-        <span>Tell a Friend</span>
+        <span className="floating-share-label">Tell a Friend</span>
       </button>
 
       <style>{`
-        .floating-share-btn {
-          box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28),
-                      0 4px 10px rgba(0, 0, 0, 0.15);
-          animation: floating-share-pulse 2.4s ease-out infinite;
+        /* Button box stays static — no pulse on the shell. */
+        /* The "Tell a Friend" label itself breathes in and out. */
+        .floating-share-label {
+          display: inline-block;
+          transform-origin: center;
+          animation: floating-share-label-pulse 1.4s ease-in-out infinite;
         }
-        @keyframes floating-share-pulse {
-          0% {
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28),
-                        0 4px 10px rgba(0, 0, 0, 0.15),
-                        0 0 0 0 rgba(204, 0, 0, 0.45);
-          }
-          70% {
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28),
-                        0 4px 10px rgba(0, 0, 0, 0.15),
-                        0 0 0 16px rgba(204, 0, 0, 0);
-          }
-          100% {
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28),
-                        0 4px 10px rgba(0, 0, 0, 0.15),
-                        0 0 0 0 rgba(204, 0, 0, 0);
-          }
+        @keyframes floating-share-label-pulse {
+          0%, 100% { transform: scale(1); }
+          50%      { transform: scale(1.08); }
         }
         @media (prefers-reduced-motion: reduce) {
-          .floating-share-btn { animation: none; }
+          .floating-share-label { animation: none; }
         }
       `}</style>
     </>
