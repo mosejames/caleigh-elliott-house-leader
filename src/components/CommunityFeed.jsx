@@ -109,9 +109,9 @@ export default function CommunityFeed({ full = false }) {
 function Header() {
   return (
     <>
-      <h2 className="heading-section" style={{ color: 'var(--red)' }}>The Love Wall</h2>
+      <h2 className="heading-section" style={{ color: 'var(--red)' }}>Caleigh&rsquo;s Corner</h2>
       <p className="center-text" style={{ color: 'var(--gray-600)', marginTop: '12px', fontSize: '1rem' }}>
-        Everybody in Caleigh&rsquo;s corner is <Family />. This is what that looks like.
+        Everybody here is <Family />. This is what that looks like.
       </p>
     </>
   )

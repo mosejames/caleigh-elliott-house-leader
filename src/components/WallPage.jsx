@@ -5,8 +5,8 @@ import Family from './Family.jsx'
 
 /**
  * /wall — the full archive of memories, photos, and answered Q&A.
- * Linked from the home page's Love Wall preview. Simple static page:
- * header + full CommunityFeed + footer.
+ * Linked from the home-page Caleigh's Corner preview. Simple static
+ * page: header + full CommunityFeed + footer.
  */
 export default function WallPage() {
   return (
@@ -56,7 +56,7 @@ function WallHeader() {
             textTransform: 'uppercase',
           }}
         >
-          The Love Wall
+          Welcome to Caleigh&rsquo;s Corner
         </h1>
 
         <p
@@ -70,7 +70,7 @@ function WallHeader() {
             margin: '16px auto 0',
           }}
         >
-          Every memory, every pic, every shoutout from my <Family />.
+          Everybody here is <Family />. Every memory, every pic, every shoutout.
         </p>
 
         <div style={{ marginTop: '28px' }}>
