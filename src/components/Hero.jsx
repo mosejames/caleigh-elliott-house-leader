@@ -3,10 +3,10 @@ import { useState } from 'react'
 const VIDEO_ID = '5qXUkh6P9gg'
 
 /**
- * Lite-YouTube pattern: show a static thumbnail + Tap for Sound button until
- * the visitor taps. Only then do we load the YouTube iframe, which is when
- * autoplay reliably works (because it's triggered by a user gesture — no
- * chrome flashes, no "Watch on YouTube" fallback overlay, no title bar).
+ * Lite-YouTube pattern: thumbnail + Tap-to-Play button until the visitor
+ * taps, then we swap in the iframe with autoplay + sound. iOS Safari and
+ * modern browsers block muted-autoplay-then-unmute flows, so tapping once
+ * starts the real video with audio — cleaner than our previous two-step.
  */
 export default function Hero() {
   const [started, setStarted] = useState(false)
@@ -35,7 +35,7 @@ export default function Hero() {
       <button
         type="button"
         onClick={() => setStarted(true)}
-        aria-label="Play video with sound"
+        aria-label="Play video"
         style={{
           position: 'relative',
           display: 'block',
@@ -47,7 +47,6 @@ export default function Hero() {
           cursor: 'pointer',
           WebkitTapHighlightColor: 'transparent',
           background: '#000',
-          overflow: 'hidden',
         }}
       >
         <img
@@ -69,7 +68,7 @@ export default function Hero() {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'rgba(0, 0, 0, 0.25)',
+            background: 'rgba(0, 0, 0, 0.28)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -77,36 +76,61 @@ export default function Hero() {
           }}
         >
           <span
-            className="animate-pulse-glow"
+            className="hero-play-pulse"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '14px',
-              padding: '18px 28px',
+              padding: '18px 30px',
               background: 'var(--red)',
               color: 'var(--white)',
               fontFamily: 'var(--font-display)',
               fontWeight: 800,
               fontSize: 'clamp(0.95rem, 2.5vw, 1.2rem)',
               textTransform: 'uppercase',
-              letterSpacing: '0.15em',
+              letterSpacing: '0.14em',
+              boxShadow: '0 10px 30px rgba(0, 0, 0, 0.45)',
             }}
           >
-            <SpeakerIcon />
-            <span>Tap for sound</span>
+            <PlayIcon />
+            <span>Tap to play</span>
           </span>
         </div>
       </button>
+
+      <style>{`
+        @keyframes hero-play-pulse-kf {
+          0% {
+            transform: scale(1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45),
+                        0 0 0 0 rgba(255, 255, 255, 0.55);
+          }
+          65% {
+            transform: scale(1.045);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45),
+                        0 0 0 22px rgba(255, 255, 255, 0);
+          }
+          100% {
+            transform: scale(1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45),
+                        0 0 0 0 rgba(255, 255, 255, 0);
+          }
+        }
+        .hero-play-pulse {
+          animation: hero-play-pulse-kf 1.8s ease-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-play-pulse { animation: none; }
+        }
+      `}</style>
     </section>
   )
 }
 
-function SpeakerIcon() {
+function PlayIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
-      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
-      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <polygon points="8 5 20 12 8 19 8 5" />
     </svg>
   )
 }
