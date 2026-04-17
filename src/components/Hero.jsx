@@ -29,7 +29,7 @@ export default function Hero() {
     <section style={{ position: 'relative', width: '100%', background: '#000' }}>
       <iframe
         ref={iframeRef}
-        src="https://www.youtube.com/embed/5qXUkh6P9gg?autoplay=1&mute=1&playsinline=1&enablejsapi=1&rel=0"
+        src="https://www.youtube.com/embed/5qXUkh6P9gg?autoplay=1&mute=1&playsinline=1&enablejsapi=1&rel=0&controls=0&modestbranding=1&iv_load_policy=3&fs=0&disablekb=1&loop=1&playlist=5qXUkh6P9gg"
         title="Caleigh Elliott for House Leader"
         allow="autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
@@ -49,7 +49,7 @@ export default function Hero() {
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.5) 100%)',
+            background: 'linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.22) 18%, rgba(0,0,0,0.22) 82%, rgba(0,0,0,0.55) 100%)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
