@@ -3,10 +3,15 @@ import { useState } from 'react'
 const VIDEO_ID = '5qXUkh6P9gg'
 
 /**
- * Lite-YouTube pattern: thumbnail + Tap-to-Play button until the visitor
- * taps, then we swap in the iframe with autoplay + sound. iOS Safari and
- * modern browsers block muted-autoplay-then-unmute flows, so tapping once
- * starts the real video with audio — cleaner than our previous two-step.
+ * Lite-YouTube pattern with a silent MP4 teaser:
+ * - Until the visitor taps: a short, muted, looping <video> clip of the
+ *   actual video plays inline. No YouTube chrome because there's no iframe.
+ *   The <video autoplay muted playsinline loop> combination autoplays
+ *   reliably on iOS Safari and every desktop browser (unlike a YouTube
+ *   embed, where autoplay is unpredictable).
+ * - On tap: we swap in the real YouTube iframe with autoplay + sound. The
+ *   user gesture permits audio, so this time autoplay works and the video
+ *   starts with sound.
  */
 export default function Hero() {
   const [started, setStarted] = useState(false)
@@ -49,13 +54,15 @@ export default function Hero() {
           background: '#000',
         }}
       >
-        <img
-          src={`https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`}
-          onError={(e) => {
-            e.currentTarget.src = `https://img.youtube.com/vi/${VIDEO_ID}/hqdefault.jpg`
-          }}
-          alt="Caleigh Elliott"
-          decoding="async"
+        <video
+          src="/calmini.mp4"
+          poster={`https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
           style={{
             display: 'block',
             width: '100%',
