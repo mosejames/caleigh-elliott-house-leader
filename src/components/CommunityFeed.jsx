@@ -138,7 +138,7 @@ function SectionHeading({ children }) {
 function PhotoGrid({ photos, empty }) {
   return (
     <div style={{ marginTop: '40px' }}>
-      <SectionHeading>The House</SectionHeading>
+      <SectionHeading>In My Corner</SectionHeading>
       {photos.length === 0 ? (
         <EmptyLine>{empty}</EmptyLine>
       ) : (
@@ -180,7 +180,7 @@ function PhotoGrid({ photos, empty }) {
 function ShoutoutList({ shoutouts, empty }) {
   return (
     <div style={{ marginTop: '40px' }}>
-      <SectionHeading>Memories From The House</SectionHeading>
+      <SectionHeading>In Their Words</SectionHeading>
       {shoutouts.length === 0 ? (
         <EmptyLine>{empty}</EmptyLine>
       ) : (
