@@ -1,62 +1,79 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
+const VIDEO_ID = '5qXUkh6P9gg'
+
+/**
+ * Lite-YouTube pattern: show a static thumbnail + Tap for Sound button until
+ * the visitor taps. Only then do we load the YouTube iframe, which is when
+ * autoplay reliably works (because it's triggered by a user gesture — no
+ * chrome flashes, no "Watch on YouTube" fallback overlay, no title bar).
+ */
 export default function Hero() {
-  const iframeRef = useRef(null)
-  const [muted, setMuted] = useState(true)
+  const [started, setStarted] = useState(false)
 
-  function handleUnmute() {
-    const iframe = iframeRef.current
-    if (iframe?.contentWindow) {
-      // Unmute
-      iframe.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: 'unMute', args: [] }),
-        '*'
-      )
-      iframe.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: 'setVolume', args: [100] }),
-        '*'
-      )
-      // Also fire play in case autoplay was blocked
-      iframe.contentWindow.postMessage(
-        JSON.stringify({ event: 'command', func: 'playVideo', args: [] }),
-        '*'
-      )
-    }
-    setMuted(false)
+  if (started) {
+    return (
+      <section style={{ position: 'relative', width: '100%', background: '#000' }}>
+        <iframe
+          src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&fs=0&loop=1&playlist=${VIDEO_ID}`}
+          title="Caleigh Elliott for Amistad House Leader"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowFullScreen
+          style={{
+            display: 'block',
+            width: '100%',
+            aspectRatio: '16 / 9',
+            border: 'none',
+          }}
+        />
+      </section>
+    )
   }
 
   return (
     <section style={{ position: 'relative', width: '100%', background: '#000' }}>
-      <iframe
-        ref={iframeRef}
-        src="https://www.youtube.com/embed/5qXUkh6P9gg?autoplay=1&mute=1&playsinline=1&enablejsapi=1&rel=0&controls=0&modestbranding=1&iv_load_policy=3&fs=0&disablekb=1&loop=1&playlist=5qXUkh6P9gg"
-        title="Caleigh Elliott for House Leader"
-        allow="autoplay; encrypted-media; picture-in-picture"
-        allowFullScreen
+      <button
+        type="button"
+        onClick={() => setStarted(true)}
+        aria-label="Play video with sound"
         style={{
+          position: 'relative',
           display: 'block',
           width: '100%',
           aspectRatio: '16 / 9',
+          padding: 0,
+          margin: 0,
           border: 'none',
+          cursor: 'pointer',
+          WebkitTapHighlightColor: 'transparent',
+          background: '#000',
+          overflow: 'hidden',
         }}
-      />
+      >
+        <img
+          src={`https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`}
+          onError={(e) => {
+            e.currentTarget.src = `https://img.youtube.com/vi/${VIDEO_ID}/hqdefault.jpg`
+          }}
+          alt="Caleigh Elliott"
+          decoding="async"
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
 
-      {muted && (
-        <button
-          type="button"
-          onClick={handleUnmute}
-          aria-label="Tap for sound"
+        <div
           style={{
             position: 'absolute',
             inset: 0,
-            background: 'linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.22) 18%, rgba(0,0,0,0.22) 82%, rgba(0,0,0,0.55) 100%)',
+            background: 'rgba(0, 0, 0, 0.25)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            border: 'none',
-            cursor: 'pointer',
-            transition: 'background 0.25s ease',
-            WebkitTapHighlightColor: 'transparent',
+            pointerEvents: 'none',
           }}
         >
           <span
@@ -78,8 +95,8 @@ export default function Hero() {
             <SpeakerIcon />
             <span>Tap for sound</span>
           </span>
-        </button>
-      )}
+        </div>
+      </button>
     </section>
   )
 }
