@@ -29,7 +29,7 @@ export default function Hero() {
     <section style={{ position: 'relative', width: '100%', background: '#000' }}>
       <iframe
         ref={iframeRef}
-        src="https://www.youtube.com/embed/NtoHyxXwxrM?autoplay=1&mute=1&playsinline=1&enablejsapi=1&rel=0"
+        src="https://www.youtube.com/embed/5qXUkh6P9gg?autoplay=1&mute=1&playsinline=1&enablejsapi=1&rel=0"
         title="Caleigh Elliott for House Leader"
         allow="autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
