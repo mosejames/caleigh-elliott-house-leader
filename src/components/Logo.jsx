@@ -47,7 +47,26 @@ export default function Logo() {
             margin: '0 auto',
           }}
         >
-          I&rsquo;m running to be your next Amistad House Leader for 2026&ndash;2027. Amistad staff makes the call &mdash; but if we&rsquo;ve worked on something together, share the memory. A note, a pic, anything that says <strong style={{ color: 'var(--red)', fontWeight: 700 }}>Team Caleigh</strong>.
+          I&rsquo;m running to be your next Amistad House Leader for 2026&ndash;2027. Amistad staff makes the call &mdash; but if we&rsquo;ve worked on something together,{' '}
+          <button
+            type="button"
+            onClick={() => window.dispatchEvent(new CustomEvent('openMemory'))}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              padding: 0,
+              font: 'inherit',
+              color: 'var(--red)',
+              fontWeight: 700,
+              textDecoration: 'underline',
+              textUnderlineOffset: '3px',
+              textDecorationThickness: '1.5px',
+              cursor: 'pointer',
+            }}
+          >
+            share a memory
+          </button>
+          . A note, a pic, anything that says <strong style={{ color: 'var(--red)', fontWeight: 700 }}>Team Caleigh</strong>.
         </p>
       </div>
     </section>
