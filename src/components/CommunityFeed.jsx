@@ -142,15 +142,15 @@ function PhotoGrid({ photos, empty }) {
       {photos.length === 0 ? (
         <EmptyLine>{empty}</EmptyLine>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px' }}>
+        <div className="photo-masonry">
           {photos.map((p) => (
-            <div key={p.id} style={{ position: 'relative' }}>
+            <div key={p.id} className="photo-masonry-item">
               <img
                 src={p.storageUrl}
                 alt={p.name}
                 loading="lazy"
                 decoding="async"
-                style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block' }}
+                style={{ width: '100%', height: 'auto', display: 'block' }}
               />
               <div
                 style={{
@@ -173,6 +173,22 @@ function PhotoGrid({ photos, empty }) {
           ))}
         </div>
       )}
+      <style>{`
+        .photo-masonry {
+          column-count: 3;
+          column-gap: 6px;
+        }
+        .photo-masonry-item {
+          position: relative;
+          break-inside: avoid;
+          margin-bottom: 6px;
+          -webkit-column-break-inside: avoid;
+          page-break-inside: avoid;
+        }
+        @media (max-width: 640px) {
+          .photo-masonry { column-count: 2; }
+        }
+      `}</style>
     </div>
   )
 }
