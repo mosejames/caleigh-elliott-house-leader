@@ -1,3 +1,26 @@
+function InlineLink({ onClick, children }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        background: 'transparent',
+        border: 'none',
+        padding: 0,
+        font: 'inherit',
+        color: 'var(--red)',
+        fontWeight: 700,
+        textDecoration: 'underline',
+        textUnderlineOffset: '3px',
+        textDecorationThickness: '1.5px',
+        cursor: 'pointer',
+      }}
+    >
+      {children}
+    </button>
+  )
+}
+
 export default function Logo() {
   return (
     <section
@@ -33,7 +56,7 @@ export default function Logo() {
             margin: '36px auto 14px',
           }}
         >
-          Hey &mdash; it&rsquo;s me, Caleigh <span style={{ color: 'var(--red)' }}>&#x1F49B;</span>
+          Hey, it&rsquo;s me, Caleigh {'\u2764\uFE0F\u2764\uFE0F\u2764\uFE0F'}
         </p>
 
         <p
@@ -48,25 +71,14 @@ export default function Logo() {
           }}
         >
           I&rsquo;m running to be your next Amistad House Leader for 2026&ndash;2027. Amistad staff makes the call &mdash; but if we&rsquo;ve worked on something together,{' '}
-          <button
-            type="button"
-            onClick={() => window.dispatchEvent(new CustomEvent('openMemory'))}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              padding: 0,
-              font: 'inherit',
-              color: 'var(--red)',
-              fontWeight: 700,
-              textDecoration: 'underline',
-              textUnderlineOffset: '3px',
-              textDecorationThickness: '1.5px',
-              cursor: 'pointer',
-            }}
-          >
+          <InlineLink onClick={() => window.dispatchEvent(new CustomEvent('openMemory'))}>
             share a memory
-          </button>
-          . A note, a pic, anything that says <strong style={{ color: 'var(--red)', fontWeight: 700 }}>Team Caleigh</strong>.
+          </InlineLink>
+          {' '}or{' '}
+          <InlineLink onClick={() => window.dispatchEvent(new CustomEvent('openPhoto'))}>
+            post a pic
+          </InlineLink>
+          . Anything that says <strong>Team Caleigh</strong>.
         </p>
       </div>
     </section>

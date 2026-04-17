@@ -14,11 +14,17 @@ const ACTIONS = [
 export default function ActionHub() {
   const [active, setActive] = useState(null)
 
-  // Lets MemoryPopup open the memory modal from anywhere on the page.
+  // Lets MemoryPopup and inline Logo links open the memory and photo modals
+  // from anywhere on the page via window CustomEvents.
   useEffect(() => {
     const onOpenMemory = () => setActive('shoutout')
+    const onOpenPhoto = () => setActive('photo')
     window.addEventListener('openMemory', onOpenMemory)
-    return () => window.removeEventListener('openMemory', onOpenMemory)
+    window.addEventListener('openPhoto', onOpenPhoto)
+    return () => {
+      window.removeEventListener('openMemory', onOpenMemory)
+      window.removeEventListener('openPhoto', onOpenPhoto)
+    }
   }, [])
 
   return (
