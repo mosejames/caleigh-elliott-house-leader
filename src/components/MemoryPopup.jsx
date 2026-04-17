@@ -193,20 +193,30 @@ export default function MemoryPopup() {
           Share a Memory &rarr;
         </button>
 
-        <p
+        <button
+          type="button"
+          onClick={handleDismiss}
           style={{
+            display: 'inline-block',
+            background: 'transparent',
+            border: 'none',
+            padding: '10px 14px',
+            marginTop: '10px',
             fontFamily: 'var(--font-display)',
             fontSize: '0.75rem',
             color: 'var(--red)',
-            opacity: 0.55,
-            marginTop: '18px',
+            opacity: 0.7,
             letterSpacing: '0.08em',
             textTransform: 'uppercase',
-            fontWeight: 600,
+            fontWeight: 700,
+            cursor: 'pointer',
+            textDecoration: 'underline',
+            textUnderlineOffset: '3px',
+            textDecorationThickness: '1px',
           }}
         >
           No pressure &mdash; close anytime
-        </p>
+        </button>
       </div>
 
       <style>{`

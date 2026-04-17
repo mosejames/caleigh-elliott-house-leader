@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const VIDEO_ID = '5qXUkh6P9gg'
 
@@ -15,6 +15,21 @@ const VIDEO_ID = '5qXUkh6P9gg'
  */
 export default function Hero() {
   const [started, setStarted] = useState(false)
+  const videoRef = useRef(null)
+
+  // iOS Safari has tightened autoplay rules — even autoplay+muted+playsinline
+  // sometimes needs an explicit .play() call to start. Doing it from a useEffect
+  // right after mount works reliably; we swallow any rejection (autoplay really
+  // blocked) so the poster image stays as a fallback.
+  useEffect(() => {
+    if (started) return
+    const v = videoRef.current
+    if (!v) return
+    const p = v.play()
+    if (p && typeof p.catch === 'function') {
+      p.catch(() => {})
+    }
+  }, [started])
 
   if (started) {
     return (
@@ -55,6 +70,7 @@ export default function Hero() {
         }}
       >
         <video
+          ref={videoRef}
           src="/calmini.mp4"
           poster={`https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`}
           autoPlay
@@ -63,6 +79,10 @@ export default function Hero() {
           playsInline
           preload="auto"
           aria-hidden="true"
+          // @ts-ignore — legacy iOS attribute for forcing inline playback
+          webkit-playsinline="true"
+          disablePictureInPicture
+          disableRemotePlayback
           style={{
             display: 'block',
             width: '100%',
