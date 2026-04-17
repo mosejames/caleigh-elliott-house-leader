@@ -26,7 +26,9 @@ export default function MemoryPopup() {
     const check = () => {
       const el = document.getElementById('photo-carousel')
       if (!el) return
-      if (el.getBoundingClientRect().bottom < 0) {
+      // Fire as the carousel's top edge is about to meet the viewport top —
+      // the user is mid-scroll through the gallery, not past it.
+      if (el.getBoundingClientRect().top < 60) {
         setVisible(true)
         window.removeEventListener('scroll', check)
       }
